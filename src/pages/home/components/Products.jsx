@@ -21,14 +21,21 @@ function Products(props) {
   } = useGetCategoriesQuery();
 
   const [selectedCategoryId, setSelectedCategoryId] = useState("ALL");
-  const filteredProducts =
-    selectedCategoryId === "ALL"
+  const filteredProducts = products
+    ? selectedCategoryId === "ALL"
       ? products
-      : products.filter((product) => product.categoryId === selectedCategoryId);
+      : products.filter((product) => product.categoryId === selectedCategoryId)
+    : [];
 
   const handleTabClick = (_id) => {
     setSelectedCategoryId(_id);
   };
+
+  console.log({
+    products,
+    selectedCategoryId,
+    filteredProducts
+  });
 
   if (isProductsLoading || isCategoriesLoading) {
     return (
