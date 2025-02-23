@@ -1,6 +1,11 @@
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+
 export const baseApi = createApi({
+  reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://fed-storefront-backend-manupa.onrender.com/api/",
+    baseUrl: import.meta.env.DEV 
+      ? "https://fed-storefront-backend-sewwandi.onrender.com/api/"
+      : "/api/",
     prepareHeaders: async (headers, { getState }) => {
       const token = await window.Clerk?.session?.getToken();
       if (token) {
@@ -9,5 +14,25 @@ export const baseApi = createApi({
       return headers;
     },
   }),
-  // ... existing code ...
-}); 
+  endpoints: (builder) => ({
+    getProducts: builder.query({
+      query: () => "products",
+    }),
+    getCategories: builder.query({
+      query: () => "categories",
+    }),
+    createOrder: builder.mutation({
+      query: (order) => ({
+        url: "orders",
+        method: "POST",
+        body: order,
+      }),
+    }),
+  }),
+});
+
+export const {
+  useGetProductsQuery,
+  useGetCategoriesQuery,
+  useCreateOrderMutation,
+} = baseApi; 
