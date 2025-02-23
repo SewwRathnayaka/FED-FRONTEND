@@ -75,7 +75,20 @@ function Products(props) {
       <h2 className="text-4xl font-bold">Our Top Products</h2>
       <Separator className="mt-2" />
       <div className="mt-4 flex items-center gap-4">
-        {[...categories, { _id: "ALL", name: "All" }].map((category) => (
+        {console.log('Categories from API:', categories)}
+        <Tab
+          key="ALL"
+          _id="ALL"
+          selectedCategoryId={selectedCategoryId}
+          name="All"
+          onTabClick={handleTabClick}
+        />
+        {categories
+          .filter(category => {
+            console.log('Filtering category:', category);
+            return category._id !== "ALL" && category.name !== "All";
+          })
+          .map((category) => (
           <Tab
             key={category._id}
             _id={category._id}

@@ -41,7 +41,20 @@ function ShopPage() {
       
       <div className="flex justify-between items-center mt-4">
         <div className="flex items-center gap-4">
-          {[...categories, { _id: "ALL", name: "All" }].map((category) => (
+          {console.log('Categories from API:', categories)}
+          <Tab
+            key="ALL"
+            _id="ALL"
+            selectedCategoryId={selectedCategoryId}
+            name="All"
+            onTabClick={setSelectedCategoryId}
+          />
+          {categories
+            .filter(category => {
+              console.log('Filtering category:', category);
+              return category._id !== "ALL" && category.name !== "All";
+            })
+            .map((category) => (
             <Tab
               key={category._id}
               _id={category._id}
