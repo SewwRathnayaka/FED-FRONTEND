@@ -1,9 +1,13 @@
+// filepath: /C:/Users/DELL/Desktop/MY PLANS/STEM LINK/FED-FRONTEND - DEV/src/pages/my-orders.page.jsx
 import { useGetUserOrdersQuery } from "@/lib/api";
 import { Skeleton } from "@/components/ui/skeleton";
 import { format } from "date-fns";
 
 function MyOrdersPage() {
   const { data: orders, isLoading } = useGetUserOrdersQuery();
+
+  // Add console log to check the orders data
+  console.log("Orders Data:", orders);
 
   if (isLoading) {
     return (
@@ -16,6 +20,10 @@ function MyOrdersPage() {
         </div>
       </main>
     );
+  }
+
+  if (!orders) {
+    return <p>Loading orders...</p>;
   }
 
   return (
@@ -36,32 +44,32 @@ function MyOrdersPage() {
               </div>
             </div>
             <div className="mt-4 grid grid-cols-4 gap-4">
-              {order.items.map((item, index) => (
+              {order.items?.map((item, index) => (
                 <div key={index} className="border rounded p-2">
                   <img
-                    src={item.product.image}
-                    alt={item.product.name}
+                    src={item.product?.image || "fallback-image.jpg"}
+                    alt={item.product?.name || "No Name Available"}
                     className="w-full h-32 object-cover rounded"
                   />
-                  <p className="mt-2 font-medium">{item.product.name}</p>
+                  <p className="mt-2 font-medium">{item.product?.name || "No Name Available"}</p>
                   <p className="text-sm text-gray-600">
                     Quantity: {item.quantity}
                   </p>
                   <p className="text-sm text-gray-600">
-                    Price: ${item.product.price}
+                    Price: ${item.product?.price}
                   </p>
                 </div>
               ))}
             </div>
             <div className="mt-4">
               <p className="font-medium">Shipping Address:</p>
-              <p>{order.addressId.line_1}</p>
-              <p>{order.addressId.line_2}</p>
+              <p>{order.addressId?.line_1}</p>
+              <p>{order.addressId?.line_2}</p>
               <p>
-                {order.addressId.city}, {order.addressId.state}{" "}
-                {order.addressId.zip_code}
+                {order.addressId?.city}, {order.addressId?.state}{" "}
+                {order.addressId?.zip_code}
               </p>
-              <p>{order.addressId.phone}</p>
+              <p>{order.addressId?.phone}</p>
             </div>
           </div>
         ))}
@@ -70,4 +78,4 @@ function MyOrdersPage() {
   );
 }
 
-export default MyOrdersPage; 
+export default MyOrdersPage;

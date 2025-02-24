@@ -1,11 +1,10 @@
+// filepath: /c:/Users/DELL/Desktop/MY PLANS/STEM LINK/FED-FRONTEND - DEV/src/store/api/baseApi.js
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const baseApi = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: import.meta.env.DEV 
-      ? "https://fed-storefront-backend-sewwandi-dev.onrender.com/api/"
-      : "/api/",
+    baseUrl: import.meta.env.VITE_BACKEND_URL + "/api/",
     prepareHeaders: async (headers, { getState }) => {
       const token = await window.Clerk?.session?.getToken();
       if (token) {
@@ -35,4 +34,4 @@ export const {
   useGetProductsQuery,
   useGetCategoriesQuery,
   useCreateOrderMutation,
-} = baseApi; 
+} = baseApi;
