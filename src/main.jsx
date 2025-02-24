@@ -42,12 +42,16 @@ createRoot(document.getElementById("root")).render(
               <Route path="/" element={<HomePage />} />
               <Route path="/shop" element={<ShopPage />} />
               <Route path="/shop/:productId" element={<ProductPage />} />
+              <Route path="/sign-in" element={<SignInPage />} />
+              <Route path="/sign-up" element={<SignUpPage />} />
               {/* The Protected layout can be used to wrap routes that needs to be logged in to access */}
               <Route element={<Protected />}>
                 <Route path="/shop/cart" element={<CartPage />} />
                 <Route path="/shop/checkout" element={<CheckoutPage />} />
                 <Route path="/shop/payment" element={<PaymentPage />} />
                 <Route path="/shop/complete" element={<CompletePage />} />
+                <Route path="/sign-in" element={<SignInPage />} />
+                <Route path="/sign-up" element={<SignUpPage />} />
                 <Route path="/account" element={<AccountPage />} />
                 <Route path="/my-orders" element={<MyOrdersPage />} />
 
