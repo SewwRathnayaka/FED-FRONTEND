@@ -23,6 +23,7 @@ import CompletePage from "./pages/complete.page";
 import PaymentPage from "./pages/payment.page";
 
 import AdminProductCreatePage from "./pages/admin-product-create.page";
+import MyOrdersPage from "./pages/my-orders.page";
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
@@ -35,7 +36,7 @@ createRoot(document.getElementById("root")).render(
   <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/">
     <Provider store={store}>
       <BrowserRouter>
-        <Routes>
+      <Routes>
           <Route element={<RootLayout />}>
             <Route element={<MainLayout />}>
               <Route path="/" element={<HomePage />} />
@@ -48,6 +49,7 @@ createRoot(document.getElementById("root")).render(
                 <Route path="/shop/payment" element={<PaymentPage />} />
                 <Route path="/shop/complete" element={<CompletePage />} />
                 <Route path="/account" element={<AccountPage />} />
+                <Route path="/my-orders" element={<MyOrdersPage />} />
 
                 {/* The AdminProtected layout can be used to wrap routes that needs to be logged in as admin to access */}
                 <Route element={<AdminProtected />}>
@@ -59,8 +61,6 @@ createRoot(document.getElementById("root")).render(
               </Route>
             </Route>
           </Route>
-          <Route path="/sign-in" element={<SignInPage />} />
-          <Route path="/sign-up" element={<SignUpPage />} />
         </Routes>
       </BrowserRouter>
     </Provider>

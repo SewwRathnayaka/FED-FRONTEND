@@ -41,22 +41,22 @@ function Navigation(props) {
 
         <SignedOut>
           <div className="flex items-center gap-4">
-            <Link to="/sign-in" className=" text-primary ">
+            <Link to="/sign-in" className="text-primary">
               Sign In
             </Link>
-            <Link to="/sign-up" className=" text-primary ">
+            <Link to="/sign-up" className="text-primary">
               Sign Up
             </Link>
           </div>
         </SignedOut>
 
         <SignedIn>
-          <UserButton />
-          <Link to={"/account"}>Account</Link>
+          <div className="flex items-center gap-4">
+            <Link to="/my-orders">My Orders</Link>
+            <Link to="/account">Account</Link>
+            <UserButton />
+          </div>
         </SignedIn>
-
-
-
       </div>
     </nav>
   );
