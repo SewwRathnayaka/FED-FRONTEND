@@ -4,7 +4,7 @@ export const baseApi = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
     baseUrl: import.meta.env.DEV 
-      ? "https://fed-storefront-backend-sewwandi.onrender.com/api/"
+      ? "https://fed-storefront-backend-sewwandi-dev.onrender.com/api/"
       : "/api/",
     prepareHeaders: async (headers, { getState }) => {
       const token = await window.Clerk?.session?.getToken();
