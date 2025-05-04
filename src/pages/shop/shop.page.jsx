@@ -15,19 +15,11 @@ function ShopPage() {
   const [selectedCategoryId, setSelectedCategoryId] = useState("ALL");
   const [sortOrder, setSortOrder] = useState("none");
 
-  const { data: products, isLoading: isProductsLoading, error: productsError } = useGetProductsQuery();
-  const { data: categories, isLoading: isCategoriesLoading, error: categoriesError } = useGetCategoriesQuery();
+  const { data: products, isLoading: isProductsLoading } = useGetProductsQuery();
+  const { data: categories, isLoading: isCategoriesLoading } = useGetCategoriesQuery();
 
   if (isProductsLoading || isCategoriesLoading) {
     return <div>Loading...</div>;
-  }
-
-  if (productsError || categoriesError) {
-    return <div>Error loading data. Please try again later.</div>;
-  }
-
-  if (!products || !categories) {
-    return <div>No data available.</div>;
   }
 
   // Filter products by category
@@ -85,11 +77,7 @@ function ShopPage() {
         </Select>
       </div>
 
-      {sortedProducts.length > 0 ? (
-        <ProductCards products={sortedProducts} />
-      ) : (
-        <div className="mt-8 text-center">No products found in this category.</div>
-      )}
+      <ProductCards products={sortedProducts} />
     </main>
   );
 }
