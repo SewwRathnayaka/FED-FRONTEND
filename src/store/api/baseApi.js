@@ -1,20 +1,22 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
+const baseQuery = fetchBaseQuery({
+  baseUrl: "https://fed-storefront-backend-sewwandi-dev.onrender.com/api",
+  prepareHeaders: async (headers) => {
+    const token = await window.Clerk?.session?.getToken({ template: 'store_admin' });
+    
+    if (token) {
+      headers.set("Authorization", `Bearer ${token}`);
+    }
+    headers.set("Content-Type", "application/json");
+    return headers;
+  },
+});
+
 export const baseApi = createApi({
   reducerPath: "api",
-  tagTypes: ['Products', 'Categories'],
-  baseQuery: fetchBaseQuery({
-    baseUrl: "https://fed-storefront-backend-sewwandi.onrender.com/api/",
-    prepareHeaders: async (headers) => {
-      const token = await window.Clerk?.session?.getToken({ template: 'store_admin' });
-      
-      if (token) {
-        headers.set("Authorization", `Bearer ${token}`);
-      }
-      headers.set("Content-Type", "application/json");
-      return headers;
-    },
-  }),
+  tagTypes: ['Products', 'Categories', 'Orders'],
+  baseQuery,
   endpoints: (builder) => ({
     getProducts: builder.query({
       query: () => "products",
@@ -50,7 +52,20 @@ export const baseApi = createApi({
     }),
     getUserOrders: builder.query({
       query: () => `orders/user/orders`
-    })
+    }),
+    createPaymentIntent: builder.mutation({
+      query: (data) => ({
+        url: '/payment/create-payment-intent',
+        method: 'POST',
+        body: data,
+      }),
+    }),
+    getCheckoutSessionStatus: builder.query({
+      query: (sessionId) => ({
+        url: `/payment/checkout-session-status?session_id=${sessionId}`,
+        method: 'GET',
+      }),
+    }),
   }),
 });
 
@@ -61,5 +76,7 @@ export const {
   useCreateProductMutation,
   useGetProductQuery,
   useGetOrderQuery,
-  useGetUserOrdersQuery
+  useGetUserOrdersQuery,
+  useCreatePaymentIntentMutation,
+  useGetCheckoutSessionStatusQuery
 } = baseApi;
