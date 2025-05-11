@@ -1,14 +1,14 @@
-import { Button } from "@/components/ui/button";
-import { clearCart } from "@/lib/features/cartSlice";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-import { toast } from "sonner";
 import CartItem from "@/components/CartItem";
+import { useDispatch, useSelector } from "react-redux";
 import { Navigate } from "react-router";
+import CheckoutForm from "./CheckoutForm";
+import { useSearchParams } from "react-router";
 
 function PaymentPage() {
   const cart = useSelector((state) => state.cart.value);
   const dispatch = useDispatch();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const orderId = searchParams.get("orderId");
 
   if (cart.length === 0) {
     return <Navigate to="/" />;
@@ -33,14 +33,7 @@ function PaymentPage() {
       </div>
 
       <div className="mt-4">
-        <Button
-          onClick={() => {
-            dispatch(clearCart());
-            toast.success("Order Placed Successfully");
-          }}
-        >
-          Place Order
-        </Button>
+        <CheckoutForm orderId={orderId} />
       </div>
     </main>
   );

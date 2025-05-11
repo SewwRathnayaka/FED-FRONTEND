@@ -12,11 +12,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Navigate, useNavigate } from "react-router-dom";
-import { useCreateOrderMutation } from "@/store/api/baseApi";
+import { useNavigate } from "react-router";
+import { useCreateOrderMutation } from "@/lib/api";
 import { toast } from "sonner";
-import { clearCart } from "@/lib/features/cartSlice";
-import { useDispatch } from "react-redux";
 
 const formSchema = z.object({
   line_1: z.string().min(1),
@@ -36,58 +34,30 @@ const formSchema = z.object({
 });
 
 const ShippingAddressForm = ({ cart }) => {
-  const dispatch = useDispatch();
   const form = useForm({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      line_1: '',
-      line_2: '',
-      city: '',
-      state: '',
-      zip_code: '',
-      phone: ''
-    }
   });
-  const [createOrder, { isLoading }] = useCreateOrderMutation();
+  const [createOrder, { isLoading, isError, data }] = useCreateOrderMutation();
   const navigate = useNavigate();
-  console.log(cart);
 
-  async function handleSubmit(values) {
+ async function handleSubmit(values) {
     try {
-      const orderData = {
-        items: cart.map(item => ({
-          product: item.product._id,  // Make sure this is a string
-          quantity: item.quantity
-        })),
+      const data = await createOrder({
+        items: cart,
         shippingAddress: {
           line_1: values.line_1,
           line_2: values.line_2,
           city: values.city,
           state: values.state,
           zip_code: values.zip_code,
-          phone: values.phone
-        }
-      };
-
-      // Debug log
-      console.log('Order data being sent:', JSON.stringify(orderData, null, 2));
-
-      const result = await createOrder(orderData).unwrap();
-
-      if (result) {
-        dispatch(clearCart());
-        toast.success("Order placed successfully");
-        navigate("/shop/payment", { 
-          state: { orderId: result._id }
-        });
-      }
+          phone: values.phone,
+        },
+      }).unwrap();
+      console.log(data);      
+      toast.success("Checkout successful");
+      navigate(`/shop/payment?orderId=${data.orderId}`);
     } catch (error) {
-      console.error('Order creation error details:', {
-        status: error.status,
-        data: error.data,
-        originalError: error
-      });
-      toast.error(error.data?.message || "Failed to place order");
+      toast.error("Checkout failed");
     }
   }
 
@@ -176,13 +146,7 @@ const ShippingAddressForm = ({ cart }) => {
             />
           </div>
           <div className="mt-4">
-            <Button 
-              type="submit" 
-              disabled={isLoading}
-              className="w-full"
-            >
-              {isLoading ? "Processing..." : "Proceed to Payment"}
-            </Button>
+            <Button type="submit">Proceed to Payment</Button>
           </div>
         </form>
       </Form>
