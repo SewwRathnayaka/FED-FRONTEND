@@ -15,7 +15,10 @@ const formSchema = z.object({
   price: z.number().min(0, "Price must be positive"),
   stock: z.number().min(0, "Stock must be positive"),
   categoryId: z.string().min(1, "Category is required"),
-  image: z.string().min(1, "Image URL is required")
+  image: z.string().min(1, "Image URL is required"),
+  stripePriceId: z.string()
+    .min(1, "Stripe Price ID is required")
+    .regex(/^price_/, "Must start with 'price_'")
 });
 
 function AdminProductCreatePage() {
@@ -30,7 +33,8 @@ function AdminProductCreatePage() {
       price: 0,
       stock: 0,
       categoryId: "",
-      image: ""
+      image: "",
+      stripePriceId: ""
     }
   });
 
@@ -61,11 +65,16 @@ function AdminProductCreatePage() {
   async function onSubmit(values) {
     try {
       const session = await window.Clerk?.session;
-      // Updated template name
       const token = await session?.getToken({ template: 'store_admin' });
       
+      console.log('Admin check:', {
+        sessionId: session?.id,
+        role: session?.user?.publicMetadata?.role,
+        hasToken: !!token
+      });
+
       if (!token) {
-        throw new Error('No authorization token available');
+        throw new Error('No admin authorization token available');
       }
 
       const productData = {
@@ -74,13 +83,9 @@ function AdminProductCreatePage() {
         price: Number(values.price),
         stock: Number(values.stock),
         categoryId: values.categoryId,
-        image: values.image.trim()
+        image: values.image.trim(),
+        stripePriceId: values.stripePriceId.trim() // Add this line
       };
-
-      console.log('Creating product:', {
-        data: productData,
-        token: token.substring(0, 50) + '...'
-      });
 
       const result = await createProduct(productData).unwrap();
       toast.success("Product created successfully");
@@ -206,6 +211,31 @@ function AdminProductCreatePage() {
                   <FormLabel>Image URL</FormLabel>
                   <FormControl>
                     <Input placeholder="Image URL" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="stripePriceId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Stripe Price ID</FormLabel>
+                  <FormControl>
+                    <Input 
+                      placeholder="price_..." 
+                      {...field}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        if (!value.startsWith('price_') && value.length > 0) {
+                          field.onChange('price_' + value);
+                        } else {
+                          field.onChange(value);
+                        }
+                      }}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

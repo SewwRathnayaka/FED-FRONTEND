@@ -2,16 +2,15 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const baseApi = createApi({
   reducerPath: "api",
-  tagTypes: ['Products', 'Categories'],
   baseQuery: fetchBaseQuery({
     baseUrl: "https://fed-storefront-backend-sewwandi.onrender.com/api/",
     prepareHeaders: async (headers) => {
-      const token = await window.Clerk?.session?.getToken({ template: 'store_admin' });
+      // Get regular session token for non-admin routes
+      const token = await window.Clerk?.session?.getToken();
       
       if (token) {
         headers.set("Authorization", `Bearer ${token}`);
       }
-      headers.set("Content-Type", "application/json");
       return headers;
     },
   }),
@@ -28,7 +27,16 @@ export const baseApi = createApi({
         url: "orders",
         method: "POST",
         body: order,
+        headers: {
+          'Content-Type': 'application/json',
+          // Auth header will be added by prepareHeaders
+        }
       }),
+      // Add error handling
+      transformErrorResponse: (response) => ({
+        status: response.status,
+        message: response.data?.message || 'Order creation failed'
+      })
     }),
     createProduct: builder.mutation({
       query: (data) => {
@@ -49,7 +57,7 @@ export const baseApi = createApi({
       query: (id) => `orders/${id}`
     }),
     getUserOrders: builder.query({
-      query: () => `orders/user/orders`
+      query: () => "orders/user/orders"
     })
   }),
 });

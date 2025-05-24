@@ -17,16 +17,13 @@ import { useCreateOrderMutation } from "@/lib/api";
 import { toast } from "sonner";
 
 const formSchema = z.object({
-  line_1: z.string().min(1),
-  line_2: z.string().min(1),
-  city: z.string().min(1),
-  state: z.string().min(1),
-  zip_code: z.string().min(1),
+  line_1: z.string().min(1, "Address line 1 is required"),
+  line_2: z.string().min(1, "Address line 2 is required"),
+  city: z.string().min(1, "City is required"),
+  state: z.string().min(1, "State is required"),
+  zip_code: z.string().min(1, "Zip code is required"),
   phone: z.string().refine(
-    (value) => {
-      // This regex checks for a basic international phone number format
-      return /^\+?[1-9]\d{1,14}$/.test(value);
-    },
+    (value) => /^\+?[1-9]\d{1,14}$/.test(value),
     {
       message: "Invalid phone number format",
     }
@@ -36,28 +33,50 @@ const formSchema = z.object({
 const ShippingAddressForm = ({ cart }) => {
   const form = useForm({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      line_1: '',
+      line_2: '',
+      city: '',
+      state: '',
+      zip_code: '',
+      phone: ''
+    }
   });
-  const [createOrder, { isLoading, isError, data }] = useCreateOrderMutation();
+  const [createOrder] = useCreateOrderMutation();
   const navigate = useNavigate();
 
- async function handleSubmit(values) {
+  async function handleSubmit(values) {
     try {
-      const data = await createOrder({
-        items: cart,
-        shippingAddress: {
-          line_1: values.line_1,
-          line_2: values.line_2,
-          city: values.city,
-          state: values.state,
-          zip_code: values.zip_code,
-          phone: values.phone,
+      // Format cart items correctly
+      const orderItems = cart.map(item => ({
+        product: {
+          _id: item._id || item.product._id,
+          name: item.name || item.product.name,
+          price: Number(item.price) || Number(item.product.price),
+          image: item.image || item.product.image,
+          description: item.description || item.product.description,
+          stripePriceId: item.stripePriceId || item.product.stripePriceId // Add this line
         },
-      }).unwrap();
-      console.log(data);      
-      toast.success("Checkout successful");
-      navigate(`/shop/payment?orderId=${data.orderId}`);
+        quantity: Number(item.quantity)
+      }));
+
+      console.log('Formatted order items:', orderItems);
+
+      const orderData = {
+        items: orderItems,
+        shippingAddress: values
+      };
+
+      const response = await createOrder(orderData).unwrap();
+      
+      if (!response?.orderId) {
+        throw new Error('Order creation failed - no order ID received');
+      }
+      
+      navigate(`/shop/payment?orderId=${response.orderId}`);
     } catch (error) {
-      toast.error("Checkout failed");
+      console.error('Order creation error:', error);
+      toast.error(error.data?.message || "Failed to create order");
     }
   }
 
@@ -73,7 +92,11 @@ const ShippingAddressForm = ({ cart }) => {
                 <FormItem>
                   <FormLabel>Line 1</FormLabel>
                   <FormControl>
-                    <Input placeholder="16/1" {...field} />
+                    <Input 
+                      placeholder="16/1" 
+                      {...field}
+                      value={field.value || ''} // Add this to ensure value is never undefined
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

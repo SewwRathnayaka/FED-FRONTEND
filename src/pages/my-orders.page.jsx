@@ -4,10 +4,13 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { format } from "date-fns";
 
 function MyOrdersPage() {
-  const { data: orders, isLoading } = useGetUserOrdersQuery();
+  const { data: orders, isLoading, error } = useGetUserOrdersQuery();
 
-  // Add console log to check the orders data
-  console.log("Orders Data:", orders);
+  // Add error handling
+  if (error) {
+    console.error('Error fetching orders:', error);
+    return <div>Error loading orders: {error.message}</div>;
+  }
 
   if (isLoading) {
     return (
@@ -20,10 +23,6 @@ function MyOrdersPage() {
         </div>
       </main>
     );
-  }
-
-  if (!orders) {
-    return <p>Loading orders...</p>;
   }
 
   return (

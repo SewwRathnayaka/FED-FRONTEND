@@ -53,6 +53,7 @@ createRoot(document.getElementById("root")).render(
                 <Route path="/sign-up" element={<SignUpPage />} />
                 <Route path="/account" element={<AccountPage />} />
                 <Route path="/my-orders" element={<MyOrdersPage />} />
+                
 
                 {/* The AdminProtected layout can be used to wrap routes that needs to be logged in as admin to access */}
                 <Route element={<AdminProtected />}>
