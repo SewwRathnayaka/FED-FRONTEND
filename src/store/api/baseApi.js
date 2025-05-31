@@ -3,14 +3,15 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const baseApi = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://fed-storefront-backend-sewwandi.onrender.com/api/",
+    baseUrl: "https://fed-storefront-backend-sewwandi-dev.onrender.com/api",
+    credentials: 'include',
     prepareHeaders: async (headers) => {
-      // Get regular session token for non-admin routes
       const token = await window.Clerk?.session?.getToken();
       
       if (token) {
         headers.set("Authorization", `Bearer ${token}`);
       }
+      headers.set('Content-Type', 'application/json');
       return headers;
     },
   }),
