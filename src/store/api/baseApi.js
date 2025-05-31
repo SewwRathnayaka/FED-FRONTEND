@@ -3,8 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const baseApi = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: import.meta.env.VITE_BASE_URL,
-    credentials: 'include',
+    baseUrl: "https://fed-storefront-backend-sewwandi.onrender.com/api/",
     prepareHeaders: async (headers) => {
       // Get regular session token for non-admin routes
       const token = await window.Clerk?.session?.getToken();
