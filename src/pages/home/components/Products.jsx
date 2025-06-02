@@ -1,42 +1,35 @@
 import { Separator } from "@/components/ui/separator";
 import { useGetProductsQuery, useGetCategoriesQuery } from "@/store/api/baseApi";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import ProductCards from "./ProductCards";
 import Tab from "./Tab";
 
-function Products(props) {
+function Products() {
+  const [selectedCategoryId, setSelectedCategoryId] = useState("ALL");
+  
   const {
     data: products,
     isLoading: isProductsLoading,
     isError: isProductsError,
-    error: productsError,
+    error: productsError
   } = useGetProductsQuery();
 
   const {
     data: categories,
     isLoading: isCategoriesLoading,
     isError: isCategoriesError,
-    error: categoriesError,
+    error: categoriesError
   } = useGetCategoriesQuery();
 
-  const [selectedCategoryId, setSelectedCategoryId] = useState("ALL");
-  const filteredProducts = products
-    ? selectedCategoryId === "ALL"
-      ? products
-      : products.filter((product) => product.categoryId === selectedCategoryId)
-    : [];
+  const filteredProducts = useMemo(() => {
+    if (!products) return [];
+    return selectedCategoryId === "ALL" 
+      ? products 
+      : products.filter(product => product.categoryId === selectedCategoryId);
+  }, [products, selectedCategoryId]);
 
-  const handleTabClick = (_id) => {
-    setSelectedCategoryId(_id);
-  };
-
-  console.log({
-    products,
-    selectedCategoryId,
-    filteredProducts
-  });
-
+  // Handle loading state
   if (isProductsLoading || isCategoriesLoading) {
     return (
       <section className="px-8 py-8">
@@ -56,17 +49,14 @@ function Products(props) {
     );
   }
 
+  // Handle error state
   if (isProductsError || isCategoriesError) {
+    console.error("Products Error:", productsError);
+    console.error("Categories Error:", categoriesError);
     return (
-      <section className="px-8 py-8">
-        <h2 className="text-4xl font-bold">Our Top Products</h2>
-
-        <Separator className="mt-2" />
-        <div className="mt-4 flex items-center gap-4"></div>
-        <div className="mt-4">
-          <p className="text-red-500">{`Error fetching products or categories`}</p>
-        </div>
-      </section>
+      <div className="p-4 text-red-500">
+        Error loading data: {productsError?.message || categoriesError?.message}
+      </div>
     );
   }
 
@@ -75,26 +65,20 @@ function Products(props) {
       <h2 className="text-4xl font-bold">Our Top Products</h2>
       <Separator className="mt-2" />
       <div className="mt-4 flex items-center gap-4">
-        {console.log('Categories from API:', categories)}
         <Tab
           key="ALL"
           _id="ALL"
           selectedCategoryId={selectedCategoryId}
           name="All"
-          onTabClick={handleTabClick}
+          onTabClick={setSelectedCategoryId}
         />
-        {categories
-          .filter(category => {
-            console.log('Filtering category:', category);
-            return category._id !== "ALL" && category.name !== "All";
-          })
-          .map((category) => (
+        {categories?.map((category) => (
           <Tab
             key={category._id}
             _id={category._id}
             selectedCategoryId={selectedCategoryId}
             name={category.name}
-            onTabClick={handleTabClick}
+            onTabClick={setSelectedCategoryId}
           />
         ))}
       </div>

@@ -3,24 +3,37 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const baseApi = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://fed-storefront-backend-sewwandi.onrender.com/api/",
+    baseUrl: "https://fed-storefront-backend-sewwandi-dev.onrender.com/api",
+    credentials: 'include',
     prepareHeaders: async (headers) => {
-      // Get regular session token for non-admin routes
       const token = await window.Clerk?.session?.getToken();
-      
       if (token) {
         headers.set("Authorization", `Bearer ${token}`);
       }
+      headers.set('Content-Type', 'application/json');
       return headers;
     },
   }),
   endpoints: (builder) => ({
     getProducts: builder.query({
-      query: () => "products",
-      providesTags: ['Products']
+      query: () => ({
+        url: "products",
+        method: "GET"
+      }),
+      transformErrorResponse: (response) => ({
+        status: response.status,
+        message: response.data?.message || 'Failed to fetch products'
+      })
     }),
     getCategories: builder.query({
-      query: () => "categories",
+      query: () => ({
+        url: "categories",
+        method: "GET"
+      }),
+      transformErrorResponse: (response) => ({
+        status: response.status,
+        message: response.data?.message || 'Failed to fetch categories'
+      })
     }),
     createOrder: builder.mutation({
       query: (order) => ({
