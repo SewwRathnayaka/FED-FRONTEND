@@ -11,6 +11,7 @@ export const baseApi = createApi({
         headers.set("Authorization", `Bearer ${token}`);
       }
       headers.set('Content-Type', 'application/json');
+      headers.set('Accept', 'application/json');
       return headers;
     },
   }),
