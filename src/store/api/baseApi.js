@@ -6,13 +6,18 @@ export const baseApi = createApi({
     baseUrl: "https://fed-storefront-backend-sewwandi-dev.onrender.com/api",
     credentials: 'include',
     prepareHeaders: async (headers) => {
-      const token = await window.Clerk?.session?.getToken();
-      if (token) {
-        headers.set("Authorization", `Bearer ${token}`);
+      try {
+        const token = await window.Clerk?.session?.getToken();
+        if (token) {
+          headers.set("Authorization", `Bearer ${token}`);
+        }
+        headers.set('Content-Type', 'application/json');
+        headers.set('Accept', 'application/json');
+        return headers;
+      } catch (error) {
+        console.error('Error preparing headers:', error);
+        return headers;
       }
-      headers.set('Content-Type', 'application/json');
-      headers.set('Accept', 'application/json');
-      return headers;
     },
   }),
   endpoints: (builder) => ({
