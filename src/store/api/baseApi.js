@@ -1,12 +1,22 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
+// Add API URL validation
+const API_URL = "https://fed-storefront-backend-sewwandi-dev.onrender.com/api";
+
+// Validate API URL
+fetch(`${API_URL}/health`)
+  .then(res => res.json())
+  .then(data => console.log('✅ Backend health check:', data))
+  .catch(err => console.error('❌ Backend not reachable:', err));
+
 export const baseApi = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://fed-storefront-backend-sewwandi-dev.onrender.com/api",
+    baseUrl: API_URL,
     credentials: 'include',
     prepareHeaders: async (headers) => {
       try {
+        console.log('🔍 Making request to:', API_URL);
         const token = await window.Clerk?.session?.getToken();
         if (token) {
           headers.set("Authorization", `Bearer ${token}`);
