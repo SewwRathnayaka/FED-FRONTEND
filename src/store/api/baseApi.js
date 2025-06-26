@@ -3,43 +3,24 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const baseApi = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://fed-storefront-backend-sewwandi-dev.onrender.com/api",
-    credentials: 'include',
+    baseUrl: "https://fed-storefront-backend-sewwandi.onrender.com/api/",
     prepareHeaders: async (headers) => {
-      try {
-        const token = await window.Clerk?.session?.getToken();
-        if (token) {
-          headers.set("Authorization", `Bearer ${token}`);
-        }
-        headers.set('Content-Type', 'application/json');
-        headers.set('Accept', 'application/json');
-        return headers;
-      } catch (error) {
-        console.error('Error preparing headers:', error);
-        return headers;
+      // Get regular session token for non-admin routes
+      const token = await window.Clerk?.session?.getToken();
+      
+      if (token) {
+        headers.set("Authorization", `Bearer ${token}`);
       }
+      return headers;
     },
   }),
   endpoints: (builder) => ({
     getProducts: builder.query({
-      query: () => ({
-        url: "products",
-        method: "GET"
-      }),
-      transformErrorResponse: (response) => ({
-        status: response.status,
-        message: response.data?.message || 'Failed to fetch products'
-      })
+      query: () => "products",
+      providesTags: ['Products']
     }),
     getCategories: builder.query({
-      query: () => ({
-        url: "categories",
-        method: "GET"
-      }),
-      transformErrorResponse: (response) => ({
-        status: response.status,
-        message: response.data?.message || 'Failed to fetch categories'
-      })
+      query: () => "categories",
     }),
     createOrder: builder.mutation({
       query: (order) => ({

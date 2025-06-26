@@ -1,35 +1,42 @@
 import { Separator } from "@/components/ui/separator";
 import { useGetProductsQuery, useGetCategoriesQuery } from "@/store/api/baseApi";
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import ProductCards from "./ProductCards";
 import Tab from "./Tab";
 
-function Products() {
-  const [selectedCategoryId, setSelectedCategoryId] = useState("ALL");
-  
+function Products(props) {
   const {
     data: products,
     isLoading: isProductsLoading,
     isError: isProductsError,
-    error: productsError
+    error: productsError,
   } = useGetProductsQuery();
 
   const {
     data: categories,
     isLoading: isCategoriesLoading,
     isError: isCategoriesError,
-    error: categoriesError
+    error: categoriesError,
   } = useGetCategoriesQuery();
 
-  const filteredProducts = useMemo(() => {
-    if (!products) return [];
-    return selectedCategoryId === "ALL" 
-      ? products 
-      : products.filter(product => product.categoryId === selectedCategoryId);
-  }, [products, selectedCategoryId]);
+  const [selectedCategoryId, setSelectedCategoryId] = useState("ALL");
+  const filteredProducts = products
+    ? selectedCategoryId === "ALL"
+      ? products
+      : products.filter((product) => product.categoryId === selectedCategoryId)
+    : [];
 
-  // Handle loading state
+  const handleTabClick = (_id) => {
+    setSelectedCategoryId(_id);
+  };
+
+  console.log({
+    products,
+    selectedCategoryId,
+    filteredProducts
+  });
+
   if (isProductsLoading || isCategoriesLoading) {
     return (
       <section className="px-8 py-8">
@@ -49,14 +56,17 @@ function Products() {
     );
   }
 
-  // Handle error state
   if (isProductsError || isCategoriesError) {
-    console.error("Products Error:", productsError);
-    console.error("Categories Error:", categoriesError);
     return (
-      <div className="p-4 text-red-500">
-        Error loading data: {productsError?.message || categoriesError?.message}
-      </div>
+      <section className="px-8 py-8">
+        <h2 className="text-4xl font-bold">Our Top Products</h2>
+
+        <Separator className="mt-2" />
+        <div className="mt-4 flex items-center gap-4"></div>
+        <div className="mt-4">
+          <p className="text-red-500">{`Error fetching products or categories`}</p>
+        </div>
+      </section>
     );
   }
 
@@ -65,20 +75,26 @@ function Products() {
       <h2 className="text-4xl font-bold">Our Top Products</h2>
       <Separator className="mt-2" />
       <div className="mt-4 flex items-center gap-4">
+        {console.log('Categories from API:', categories)}
         <Tab
           key="ALL"
           _id="ALL"
           selectedCategoryId={selectedCategoryId}
           name="All"
-          onTabClick={setSelectedCategoryId}
+          onTabClick={handleTabClick}
         />
-        {categories?.map((category) => (
+        {categories
+          .filter(category => {
+            console.log('Filtering category:', category);
+            return category._id !== "ALL" && category.name !== "All";
+          })
+          .map((category) => (
           <Tab
             key={category._id}
             _id={category._id}
             selectedCategoryId={selectedCategoryId}
             name={category.name}
-            onTabClick={setSelectedCategoryId}
+            onTabClick={handleTabClick}
           />
         ))}
       </div>
