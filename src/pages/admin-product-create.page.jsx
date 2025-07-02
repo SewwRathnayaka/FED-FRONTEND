@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { toast } from "sonner";
 import { useEffect } from "react";
 
+// Remove stripePriceId from the schema
 const formSchema = z.object({
   name: z.string().min(1, "Name is required"),
   description: z.string().min(1, "Description is required"),
@@ -16,9 +17,7 @@ const formSchema = z.object({
   stock: z.number().min(0, "Stock must be positive"),
   categoryId: z.string().min(1, "Category is required"),
   image: z.string().min(1, "Image URL is required"),
-  stripePriceId: z.string()
-    .min(1, "Stripe Price ID is required")
-    .regex(/^price_/, "Must start with 'price_'")
+  // REMOVE stripePriceId
 });
 
 function AdminProductCreatePage() {
@@ -34,7 +33,7 @@ function AdminProductCreatePage() {
       stock: 0,
       categoryId: "",
       image: "",
-      stripePriceId: ""
+      // REMOVE stripePriceId
     }
   });
 
@@ -66,16 +65,6 @@ function AdminProductCreatePage() {
     try {
       const session = await window.Clerk?.session;
       const token = await session?.getToken({ template: 'store_admin' });
-      
-      console.log('Admin check:', {
-        sessionId: session?.id,
-        role: session?.user?.publicMetadata?.role,
-        hasToken: !!token
-      });
-
-      if (!token) {
-        throw new Error('No admin authorization token available');
-      }
 
       const productData = {
         name: values.name.trim(),
@@ -84,14 +73,18 @@ function AdminProductCreatePage() {
         stock: Number(values.stock),
         categoryId: values.categoryId,
         image: values.image.trim(),
-        stripePriceId: values.stripePriceId.trim() // Add this line
       };
 
+      console.log("🟢 Submitting product data:", productData);
+
       const result = await createProduct(productData).unwrap();
+
+      console.log("✅ Product creation result:", result);
+
       toast.success("Product created successfully");
       form.reset();
     } catch (error) {
-      console.error('Product creation failed:', error);
+      console.error('❌ Product creation failed:', error);
       toast.error(error.data?.message || "Failed to create product");
     }
   }
@@ -217,30 +210,8 @@ function AdminProductCreatePage() {
               )}
             />
 
-            <FormField
-              control={form.control}
-              name="stripePriceId"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Stripe Price ID</FormLabel>
-                  <FormControl>
-                    <Input 
-                      placeholder="price_..." 
-                      {...field}
-                      onChange={(e) => {
-                        const value = e.target.value;
-                        if (!value.startsWith('price_') && value.length > 0) {
-                          field.onChange('price_' + value);
-                        } else {
-                          field.onChange(value);
-                        }
-                      }}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            
+            
 
             <Button 
               type="submit" 
