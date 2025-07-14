@@ -43,7 +43,7 @@ function AdminProductCreatePage() {
       try {
         const session = await window.Clerk?.session;
         // Updated template name
-        const token = await session?.getToken({ template: 'store_admin' });
+        const token = await session?.getToken({ template: 'admin-role' });
         
         console.log('Token Verification:', {
           hasSession: !!session,
@@ -64,7 +64,7 @@ function AdminProductCreatePage() {
   async function onSubmit(values) {
     try {
       const session = await window.Clerk?.session;
-      const token = await session?.getToken({ template: 'store_admin' });
+      const token = await session?.getToken({ template: 'admin-role' });
 
       const productData = {
         name: values.name.trim(),

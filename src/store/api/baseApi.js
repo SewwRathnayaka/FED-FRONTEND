@@ -5,9 +5,7 @@ export const baseApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "https://fed-storefront-backend-sewwandi.onrender.com/api/",
     prepareHeaders: async (headers) => {
-      // Get regular session token for non-admin routes
-      const token = await window.Clerk?.session?.getToken();
-      
+      const token = await window.Clerk?.session?.getToken({ template: 'admin-role' });
       if (token) {
         headers.set("Authorization", `Bearer ${token}`);
       }

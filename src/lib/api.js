@@ -13,7 +13,7 @@ export const Api = createApi({
         async function checkToken() {
           const clerk = window.Clerk;
           if (clerk) {
-            const token = await clerk.session?.getToken();
+            const token = await clerk.session?.getToken({ template: 'admin-role' });
             headers.set("Authorization", `Bearer ${token}`);
             resolve(headers);
           } else {
