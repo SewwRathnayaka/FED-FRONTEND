@@ -92,138 +92,161 @@ function AdminProductCreatePage() {
   // Show loading state while categories load
   if (categoriesLoading) {
     return (
-      <main className="px-8">
-        <h1 className="text-4xl font-bold">Create Product</h1>
-        <div className="mt-8">Loading categories...</div>
-      </main>
+      <div className="relative min-h-screen w-full overflow-hidden">
+        <div
+          className="absolute inset-0 w-full h-full z-0"
+          style={{
+            backgroundImage: "url('/assets/products/Fashion1.jpeg.jpg')",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            filter: "blur(10px) brightness(0.75)",
+          }}
+        />
+        {/* Overlay for readability */}
+        <div className="absolute inset-0 w-full h-full z-0 bg-gradient-to-br from-white/40 via-white/10 to-white/40 pointer-events-none" />
+        <main className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4 pt-32">
+          {/* Heading below Mebius */}
+          <h2 className="text-2xl font-bold text-gray-900 bg-white/70 rounded-xl px-6 py-2 shadow-lg mb-8 backdrop-blur-md">Create Product</h2>
+          <div className="mt-4 max-w-xl w-full p-8 rounded-2xl bg-white/70 backdrop-blur-md shadow-xl border-0">
+            <div className="text-lg font-semibold text-gray-700">Loading categories...</div>
+          </div>
+        </main>
+      </div>
     );
   }
 
   return (
-    <main className="px-8">
-      <h1 className="text-4xl font-bold">Create Product</h1>
-      <div className="mt-8 max-w-xl">
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Name</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Product name" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            
-            <FormField
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Description</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Product description" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="price"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Price</FormLabel>
-                  <FormControl>
-                    <Input 
-                      type="number" 
-                      placeholder="0.00" 
-                      {...field}
-                      onChange={e => field.onChange(Number(e.target.value))}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="stock"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Stock</FormLabel>
-                  <FormControl>
-                    <Input 
-                      type="number" 
-                      placeholder="0" 
-                      {...field}
-                      onChange={e => field.onChange(Number(e.target.value))}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="categoryId"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Category</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+    <div className="relative min-h-screen w-full overflow-hidden">
+      <div
+        className="absolute inset-0 w-full h-full z-0"
+        style={{
+          backgroundImage: "url('/assets/products/Fashion1.jpeg.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          filter: "blur(10px) brightness(0.75)",
+        }}
+      />
+      {/* Overlay for readability */}
+      <div className="absolute inset-0 w-full h-full z-0 bg-gradient-to-br from-white/40 via-white/10 to-white/40 pointer-events-none" />
+      <main className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4 pt-32">
+        {/* Heading below Mebius */}
+        <h2 className="text-2xl font-bold text-gray-900 bg-white/70 rounded-xl px-4 py-2 shadow-lg mb-4 backdrop-blur-md">Create Product</h2>
+        <div className="max-w-xl w-full p-10 rounded-2xl bg-white/70 backdrop-blur-md shadow-xl mb-6 border-0 gap-4">
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-semibold text-gray-800">Name</FormLabel>
                     <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select a category" />
-                      </SelectTrigger>
+                      <Input className="rounded-xl  bg-white/60 border border-white/40 shadow px-4 py-2 focus:ring-2 focus:ring-yellow-400" placeholder="Product name" {...field} />
                     </FormControl>
-                    <SelectContent>
-                      {categories?.map(category => (
-                        <SelectItem key={category._id} value={category._id}>
-                          {category.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="image"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Image URL</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Image URL" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            
-            
-
-            <Button 
-              type="submit" 
-              disabled={isLoading || !categories?.length}
-              className="w-full"
-            >
-              {isLoading ? "Creating..." : "Create Product"}
-            </Button>
-          </form>
-        </Form>
-      </div>
-    </main>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="description"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-semibold text-gray-800">Description</FormLabel>
+                    <FormControl>
+                      <Input className="rounded-xl bg-white/60 border border-white/40 shadow px-4 py-2 focus:ring-2 focus:ring-yellow-400" placeholder="Product description" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="price"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-semibold text-gray-800">Price</FormLabel>
+                    <FormControl>
+                      <Input 
+                        type="number" 
+                        placeholder="0.00" 
+                        className="rounded-xl bg-white/60 border border-white/40 shadow px-4 py-2 focus:ring-2 focus:ring-yellow-400"
+                        {...field}
+                        onChange={e => field.onChange(Number(e.target.value))}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="stock"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-semibold text-gray-800">Stock</FormLabel>
+                    <FormControl>
+                      <Input 
+                        type="number" 
+                        placeholder="0" 
+                        className="rounded-xl bg-white/60 border border-white/40 shadow px-4 py-2 focus:ring-2 focus:ring-yellow-400"
+                        {...field}
+                        onChange={e => field.onChange(Number(e.target.value))}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="categoryId"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-semibold text-gray-800">Category</FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <FormControl>
+                        <SelectTrigger className="rounded-xl bg-white/60 border border-white/40 shadow px-4 py-2 focus:ring-2 focus:ring-yellow-400">
+                          <SelectValue placeholder="Select a category" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent className="rounded-xl bg-white/80 shadow-lg">
+                        {categories?.map(category => (
+                          <SelectItem key={category._id} value={category._id} className="rounded-xl">
+                            {category.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="image"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-semibold text-gray-800">Image URL</FormLabel>
+                    <FormControl>
+                      <Input className="rounded-xl bg-white/60 border border-white/40 shadow px-4 py-2 focus:ring-2 focus:ring-yellow-400" placeholder="Image URL" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <Button 
+                type="submit" 
+                disabled={isLoading || !categories?.length}
+                className="w-full rounded-xl bg-yellow-400 text-gray-900 font-bold text-lg shadow-lg hover:bg-yellow-300 transition py-3 mt-2"
+              >
+                {isLoading ? "Creating..." : "Create Product"}
+              </Button>
+            </form>
+          </Form>
+        </div>
+      </main>
+    </div>
   );
 }
 

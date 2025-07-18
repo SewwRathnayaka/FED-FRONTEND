@@ -28,28 +28,28 @@ function ProductCard(props) {
   };
 
   return (
-    <Card>
-      <Link to={`/shop/${props._id}`}>
-        <div className="h-80 bg-card rounded-lg p-4 relative">
-          <img src={props.image} className="block" />
-          {/* Add stock badge */}
-          <div className={`absolute top-2 right-2 px-2 py-1 rounded-full ${
+    <Card className="p-6 bg-white/70 backdrop-blur-md shadow-xl rounded-2xl transition-transform hover:scale-[1.025] hover:shadow-2xl border-0">
+      <Link to={`/shop/${props._id}`} className="block">
+        <div className="relative flex flex-col items-center gap-4">
+          <img src={props.image} alt={props.name} className="w-32 h-32 object-cover rounded-xl shadow-md border border-white/60 bg-white/40" />
+          {/* Stock badge */}
+          <div className={`absolute top-2 right-2 px-3 py-1 rounded-full text-xs font-semibold shadow-sm ${
             props.stock > 0 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
           }`}>
             {props.stock > 0 ? `${props.stock} in stock` : 'Out of stock'}
           </div>
         </div>
-        <div className="flex px-4 mt-4 items-center justify-between">
-          <h2 className="text-2xl font-semibold">{props.name}</h2>
-          <span className="block text-lg font-medium">${props.price}</span>
+        <div className="flex flex-col items-center mt-4 gap-1">
+          <h2 className="text-xl font-extrabold text-gray-900 drop-shadow-sm text-center">{props.name}</h2>
+          <span className="text-lg font-semibold text-yellow-500 drop-shadow">${props.price}</span>
         </div>
-        <div className="px-4 mt-2">
-          <p className="text-sm">{props.description}</p>
+        <div className="mt-2 text-center">
+          <p className="text-sm text-gray-700 line-clamp-2">{props.description}</p>
         </div>
       </Link>
-      <div className="mt-1 p-4">
+      <div className="mt-4">
         <Button 
-          className="w-full" 
+          className="w-full font-bold text-base"
           onClick={handleClick}
           disabled={props.stock <= 0}
         >

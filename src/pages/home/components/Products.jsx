@@ -71,34 +71,51 @@ function Products(props) {
   }
 
   return (
-    <section className="px-8 py-8">
-      <h2 className="text-4xl font-bold">Our Top Products</h2>
-      <Separator className="mt-2" />
-      <div className="mt-4 flex items-center gap-4">
-        {console.log('Categories from API:', categories)}
-        <Tab
-          key="ALL"
-          _id="ALL"
-          selectedCategoryId={selectedCategoryId}
-          name="All"
-          onTabClick={handleTabClick}
-        />
-        {categories
-          .filter(category => {
-            console.log('Filtering category:', category);
-            return category._id !== "ALL" && category.name !== "All";
-          })
-          .map((category) => (
+    <section className="px-0 py-0 w-full relative flex flex-col overflow-hidden">
+      {/* Blurry background image behind product cards */}
+      <div
+        className="absolute inset-0 w-full h-full z-0"
+        style={{
+          backgroundImage: "url('/assets/products/Fashion1.jpeg.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          filter: "blur(10px) brightness(0.80)",
+        }}
+      />
+      {/* Lighter overlay to soften the background */}
+      <div className="absolute inset-0 w-full h-full z-0 bg-gradient-to-br from-white/40 via-white/10 to-white/40 pointer-events-none" />
+      <div className="relative z-10 px-8 py-8">
+        <h2 className="text-4xl font-extrabold text-black drop-shadow-2xl">Our Top Products</h2>
+        <Separator className="mt-2" />
+        <div className="mt-4 flex items-center gap-4">
+          {console.log('Categories from API:', categories)}
           <Tab
-            key={category._id}
-            _id={category._id}
+            key="ALL"
+            _id="ALL"
             selectedCategoryId={selectedCategoryId}
-            name={category.name}
+            name="All"
             onTabClick={handleTabClick}
           />
-        ))}
+          {categories
+            .filter(category => {
+              console.log('Filtering category:', category);
+              return category._id !== "ALL" && category.name !== "All";
+            })
+            .map((category) => (
+            <Tab
+              key={category._id}
+              _id={category._id}
+              selectedCategoryId={selectedCategoryId}
+              name={category.name}
+              onTabClick={handleTabClick}
+            />
+          ))}
+        </div>
+        {/* Product cards area with white overlay for readability */}
+        <div className="mt-8 rounded-2xl p-8 shadow-xl bg-white/80 backdrop-blur-md">
+          <ProductCards products={filteredProducts} />
+        </div>
       </div>
-      <ProductCards products={filteredProducts} />
     </section>
   );
 }

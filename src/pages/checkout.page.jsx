@@ -11,23 +11,38 @@ function CheckoutPage() {
   }
 
   return (
-    <main className="px-8">
-      <h2 className="text-4xl font-bold">Checkout Page</h2>
-      <div className="mt-4">
-        <h3 className="text-3xl font-semibold">Order Details</h3>
-        <div className="mt-2 grid grid-cols-4 gap-x-4">
-          {cart.map((item, index) => (
-            <CartItem key={index} item={item} />
-          ))}
+    <div className="relative min-h-screen w-full overflow-hidden">
+      <div
+        className="absolute inset-0 w-full h-full z-0"
+        style={{
+          backgroundImage: "url('/assets/products/Fashion1.jpeg.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          filter: "blur(10px) brightness(0.75)",
+        }}
+      />
+      <main className="relative z-10 px-8 pt-32 flex flex-col items-center">
+        <h2 className="text-2xl font-bold text-gray-900 bg-white/70 rounded-xl px-6 py-2 shadow-lg mb-8 backdrop-blur-md">Checkout Page</h2>
+        <div className="w-full max-w-6xl flex flex-col md:flex-row gap-8 items-start justify-center">
+          {/* Order Details - Left */}
+          <div className="flex-1 max-w-2xl p-8 rounded-2xl bg-white/70 backdrop-blur-md shadow-2xl border-0 flex flex-col items-center">
+            <h3 className="text-lg font-semibold mb-4">Order Details</h3>
+            <div className="grid grid-cols-1 gap-6 w-full">
+              {cart.map((item, index) => (
+                <CartItem key={index} item={item} />
+              ))}
+            </div>
+          </div>
+          {/* Shipping Form - Right */}
+          <div className="flex-1 max-w-xl p-8 rounded-2xl bg-white/70 backdrop-blur-md shadow-2xl border-0 flex flex-col items-center">
+            <h3 className="text-lg font-semibold mb-4">Enter Shipping Address</h3>
+            <div className="w-full">
+              <ShippingAddressForm cart={cart} />
+            </div>
+          </div>
         </div>
-      </div>
-      <div className="mt-4">
-        <h3 className="text-3xl font-semibold">Enter Shipping Address</h3>
-        <div className="mt-2 w-1/2">
-          <ShippingAddressForm cart={cart} />
-        </div>
-      </div>
-    </main>
+      </main>
+    </div>
   );
 }
 

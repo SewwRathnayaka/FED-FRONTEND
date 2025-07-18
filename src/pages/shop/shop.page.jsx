@@ -35,50 +35,59 @@ function ShopPage() {
   });
 
   return (
-    <main className="px-8 py-8">
-      <h1 className="text-4xl font-bold">Shop</h1>
-      <Separator className="mt-2" />
-      
-      <div className="flex justify-between items-center mt-4">
-        <div className="flex items-center gap-4">
-          {console.log('Categories from API:', categories)}
-          <Tab
-            key="ALL"
-            _id="ALL"
-            selectedCategoryId={selectedCategoryId}
-            name="All"
-            onTabClick={setSelectedCategoryId}
-          />
-          {categories
-            .filter(category => {
-              console.log('Filtering category:', category);
-              return category._id !== "ALL" && category.name !== "All";
-            })
-            .map((category) => (
+    <div className="relative min-h-screen w-full overflow-hidden">
+      {/* Full-page blurred background image */}
+      <div
+        className="absolute inset-0 w-full h-full z-0"
+        style={{
+          backgroundImage: "url('/assets/products/Fashion1.jpeg.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          filter: "blur(8px) brightness(0.7)",
+        }}
+      />
+      {/* Content overlay */}
+      <main className="relative z-10 px-8 py-16">
+        <div className="flex justify-between items-center mt-4 mb-8">
+          <div className="flex items-center gap-4">
             <Tab
-              key={category._id}
-              _id={category._id}
+              key="ALL"
+              _id="ALL"
               selectedCategoryId={selectedCategoryId}
-              name={category.name}
+              name="All"
               onTabClick={setSelectedCategoryId}
             />
-          ))}
+            {categories
+              .filter(category => category._id !== "ALL" && category.name !== "All")
+              .map((category) => (
+                <Tab
+                  key={category._id}
+                  _id={category._id}
+                  selectedCategoryId={selectedCategoryId}
+                  name={category.name}
+                  onTabClick={setSelectedCategoryId}
+                />
+              ))}
+          </div>
+
+          <Select value={sortOrder} onValueChange={setSortOrder}>
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Sort by price" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="none">No sorting</SelectItem>
+              <SelectItem value="asc">Price: Low to High</SelectItem>
+              <SelectItem value="desc">Price: High to Low</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
 
-        <Select value={sortOrder} onValueChange={setSortOrder}>
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Sort by price" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="none">No sorting</SelectItem>
-            <SelectItem value="asc">Price: Low to High</SelectItem>
-            <SelectItem value="desc">Price: High to Low</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-
-      <ProductCards products={sortedProducts} />
-    </main>
+        {/* Product cards area with extra overlay for readability */}
+        <div className="rounded-2xl bg-white/70 backdrop-blur-md p-8 shadow-xl">
+          <ProductCards products={sortedProducts} />
+        </div>
+      </main>
+    </div>
   );
 }
 
