@@ -1,7 +1,6 @@
 import "./Hero.css";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router";
-import { Vortex } from "@/components/ui/vortex";
 
 function Hero() {
   return (
@@ -34,7 +33,6 @@ function Hero() {
       </div>
       {/* Vortex - right side */}
       <div className="flex-1 h-[40vh] md:h-full relative z-10">
-        <Vortex backgroundColor="transparent" className="absolute inset-0 w-full h-full" />
       </div>
     </section>
   );
