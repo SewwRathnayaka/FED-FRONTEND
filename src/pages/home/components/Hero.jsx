@@ -9,7 +9,7 @@ function Hero() {
       <div
         className="absolute inset-0 w-full h-full z-0"
         style={{
-          backgroundImage: "url('/assets/products/Fashion1.jpeg.jpg')",
+          backgroundImage: "url('https://rspe1x6h41aadylf.public.blob.vercel-storage.com/products/Fashion1.jpeg-M2bV4H2n1Kb3K3Jdi48XB2TYSBF8ws.jpg')",
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
