@@ -24,12 +24,12 @@ function MyOrdersPage() {
             filter: "blur(10px) brightness(0.75)",
           }}
         />
-        <main className="relative z-10 px-8 pt-32">
-          <h2 className="text-4xl font-bold">My Orders</h2>
+        <main className="relative z-10 px-4 sm:px-8 pt-24 sm:pt-32">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold">My Orders</h2>
           <div className="mt-4 space-y-4">
-            <Skeleton className="h-24" />
-            <Skeleton className="h-24" />
-            <Skeleton className="h-24" />
+            <Skeleton className="h-20 sm:h-24" />
+            <Skeleton className="h-20 sm:h-24" />
+            <Skeleton className="h-20 sm:h-24" />
           </div>
         </main>
       </div>
@@ -47,14 +47,14 @@ function MyOrdersPage() {
           filter: "blur(10px) brightness(0.75)",
         }}
       />
-      <main className="relative z-10 px-8 pt-32">
-        <h2 className="text-2xl font-bold">My Orders</h2>
+      <main className="relative z-10 px-4 sm:px-8 pt-24 sm:pt-32">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold">My Orders</h2>
         <div className="mt-4 space-y-4">
           {orders?.map((order) => (
-            <div key={order._id} className="p-4 bg-white/70 backdrop-blur-md shadow-xl rounded-2xl border-0">
-              <div className="flex justify-between items-center mb-2">
-                <p className="font-semibold text-base">Order #{order._id}</p>
-                <div className="space-x-2">
+            <div key={order._id} className="p-3 sm:p-4 bg-white/70 backdrop-blur-md shadow-xl rounded-2xl border-0">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-2 gap-2">
+                <p className="font-semibold text-sm sm:text-base">Order #{order._id}</p>
+                <div className="flex flex-wrap gap-2">
                   <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded text-xs font-semibold">
                     {order.orderStatus}
                   </span>
@@ -65,15 +65,15 @@ function MyOrdersPage() {
               </div>
               <div className="flex flex-col gap-3">
                 {order.items?.map((item, index) => (
-                  <div key={index} className="flex items-center gap-4 p-2 bg-white/60 rounded-xl shadow border border-white/40">
+                  <div key={index} className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 p-2 sm:p-3 bg-white/60 rounded-xl shadow border border-white/40">
                     <img
                       src={item.product?.image || 'fallback-image.jpg'}
                       alt={item.product?.name || 'No Name Available'}
-                      className="w-16 h-16 object-cover rounded-lg shadow border border-white/60 bg-white/40"
+                      className="w-12 h-12 sm:w-16 sm:h-16 object-cover rounded-lg shadow border border-white/60 bg-white/40 flex-shrink-0"
                     />
                     <div className="flex-1 flex flex-col gap-1">
-                      <p className="font-extrabold text-base text-gray-900 drop-shadow-sm">{item.product?.name || 'No Name Available'}</p>
-                      <span className="text-sm font-semibold text-yellow-500 drop-shadow">${item.product?.price}</span>
+                      <p className="font-extrabold text-sm sm:text-base text-gray-900 drop-shadow-sm">{item.product?.name || 'No Name Available'}</p>
+                      <span className="text-xs sm:text-sm font-semibold text-yellow-500 drop-shadow">${item.product?.price}</span>
                       <span className="inline-block mt-1 px-2 py-0.5 bg-gray-200/80 text-gray-700 text-xs font-semibold rounded-full shadow-sm w-fit">Qty: {item.quantity}</span>
                     </div>
                   </div>

@@ -104,11 +104,11 @@ function AdminProductCreatePage() {
         />
         {/* Overlay for readability */}
         <div className="absolute inset-0 w-full h-full z-0 bg-gradient-to-br from-white/40 via-white/10 to-white/40 pointer-events-none" />
-        <main className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4 pt-32">
+        <main className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4 sm:px-8 pt-24 sm:pt-32">
           {/* Heading below Mebius */}
-          <h2 className="text-2xl font-bold text-gray-900 bg-white/70 rounded-xl px-6 py-2 shadow-lg mb-8 backdrop-blur-md">Create Product</h2>
-          <div className="mt-4 max-w-xl w-full p-8 rounded-2xl bg-white/70 backdrop-blur-md shadow-xl border-0">
-            <div className="text-lg font-semibold text-gray-700">Loading categories...</div>
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 bg-white/70 rounded-xl px-4 sm:px-6 py-2 shadow-lg mb-6 sm:mb-8 backdrop-blur-md">Create Product</h2>
+          <div className="mt-4 max-w-xl w-full p-4 sm:p-6 md:p-8 rounded-2xl bg-white/70 backdrop-blur-md shadow-xl border-0">
+            <div className="text-base sm:text-lg font-semibold text-gray-700">Loading categories...</div>
           </div>
         </main>
       </div>
@@ -128,20 +128,20 @@ function AdminProductCreatePage() {
       />
       {/* Overlay for readability */}
       <div className="absolute inset-0 w-full h-full z-0 bg-gradient-to-br from-white/40 via-white/10 to-white/40 pointer-events-none" />
-      <main className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4 pt-32">
+      <main className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4 sm:px-8 pt-24 sm:pt-32">
         {/* Heading below Mebius */}
-        <h2 className="text-2xl font-bold text-gray-900 bg-white/70 rounded-xl px-4 py-2 shadow-lg mb-4 backdrop-blur-md">Create Product</h2>
-        <div className="max-w-xl w-full p-10 rounded-2xl bg-white/70 backdrop-blur-md shadow-xl mb-6 border-0 gap-4">
+        <h2 className="text-xl sm:text-2xl font-bold text-gray-900 bg-white/70 rounded-xl px-4 sm:px-6 py-2 shadow-lg mb-4 sm:mb-6 backdrop-blur-md">Create Product</h2>
+        <div className="max-w-xl w-full p-4 sm:p-6 md:p-8 lg:p-10 rounded-2xl bg-white/70 backdrop-blur-md shadow-xl mb-6 border-0 gap-4">
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 sm:space-y-6">
               <FormField
                 control={form.control}
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="font-semibold text-gray-800">Name</FormLabel>
+                    <FormLabel className="font-semibold text-gray-800 text-sm sm:text-base">Name</FormLabel>
                     <FormControl>
-                      <Input className="rounded-xl  bg-white/60 border border-white/40 shadow px-4 py-2 focus:ring-2 focus:ring-yellow-400" placeholder="Product name" {...field} />
+                      <Input className="rounded-xl bg-white/60 border border-white/40 shadow px-3 sm:px-4 py-2 focus:ring-2 focus:ring-yellow-400 text-sm sm:text-base" placeholder="Product name" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -152,67 +152,69 @@ function AdminProductCreatePage() {
                 name="description"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="font-semibold text-gray-800">Description</FormLabel>
+                    <FormLabel className="font-semibold text-gray-800 text-sm sm:text-base">Description</FormLabel>
                     <FormControl>
-                      <Input className="rounded-xl bg-white/60 border border-white/40 shadow px-4 py-2 focus:ring-2 focus:ring-yellow-400" placeholder="Product description" {...field} />
+                      <Input className="rounded-xl bg-white/60 border border-white/40 shadow px-3 sm:px-4 py-2 focus:ring-2 focus:ring-yellow-400 text-sm sm:text-base" placeholder="Product description" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="price"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-semibold text-gray-800">Price</FormLabel>
-                    <FormControl>
-                      <Input 
-                        type="number" 
-                        placeholder="0.00" 
-                        className="rounded-xl bg-white/60 border border-white/40 shadow px-4 py-2 focus:ring-2 focus:ring-yellow-400"
-                        {...field}
-                        onChange={e => field.onChange(Number(e.target.value))}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="stock"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-semibold text-gray-800">Stock</FormLabel>
-                    <FormControl>
-                      <Input 
-                        type="number" 
-                        placeholder="0" 
-                        className="rounded-xl bg-white/60 border border-white/40 shadow px-4 py-2 focus:ring-2 focus:ring-yellow-400"
-                        {...field}
-                        onChange={e => field.onChange(Number(e.target.value))}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                <FormField
+                  control={form.control}
+                  name="price"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="font-semibold text-gray-800 text-sm sm:text-base">Price</FormLabel>
+                      <FormControl>
+                        <Input 
+                          type="number" 
+                          placeholder="0.00" 
+                          className="rounded-xl bg-white/60 border border-white/40 shadow px-3 sm:px-4 py-2 focus:ring-2 focus:ring-yellow-400 text-sm sm:text-base"
+                          {...field}
+                          onChange={e => field.onChange(Number(e.target.value))}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="stock"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="font-semibold text-gray-800 text-sm sm:text-base">Stock</FormLabel>
+                      <FormControl>
+                        <Input 
+                          type="number" 
+                          placeholder="0" 
+                          className="rounded-xl bg-white/60 border border-white/40 shadow px-3 sm:px-4 py-2 focus:ring-2 focus:ring-yellow-400 text-sm sm:text-base"
+                          {...field}
+                          onChange={e => field.onChange(Number(e.target.value))}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
               <FormField
                 control={form.control}
                 name="categoryId"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="font-semibold text-gray-800">Category</FormLabel>
+                    <FormLabel className="font-semibold text-gray-800 text-sm sm:text-base">Category</FormLabel>
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
-                        <SelectTrigger className="rounded-xl bg-white/60 border border-white/40 shadow px-4 py-2 focus:ring-2 focus:ring-yellow-400">
+                        <SelectTrigger className="rounded-xl bg-white/60 border border-white/40 shadow px-3 sm:px-4 py-2 focus:ring-2 focus:ring-yellow-400 text-sm sm:text-base">
                           <SelectValue placeholder="Select a category" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent className="rounded-xl bg-white/80 shadow-lg">
                         {categories?.map(category => (
-                          <SelectItem key={category._id} value={category._id} className="rounded-xl">
+                          <SelectItem key={category._id} value={category._id} className="rounded-xl text-sm sm:text-base">
                             {category.name}
                           </SelectItem>
                         ))}
@@ -227,9 +229,9 @@ function AdminProductCreatePage() {
                 name="image"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="font-semibold text-gray-800">Image URL</FormLabel>
+                    <FormLabel className="font-semibold text-gray-800 text-sm sm:text-base">Image URL</FormLabel>
                     <FormControl>
-                      <Input className="rounded-xl bg-white/60 border border-white/40 shadow px-4 py-2 focus:ring-2 focus:ring-yellow-400" placeholder="Image URL" {...field} />
+                      <Input className="rounded-xl bg-white/60 border border-white/40 shadow px-3 sm:px-4 py-2 focus:ring-2 focus:ring-yellow-400 text-sm sm:text-base" placeholder="Image URL" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -238,7 +240,7 @@ function AdminProductCreatePage() {
               <Button 
                 type="submit" 
                 disabled={isLoading || !categories?.length}
-                className="w-full rounded-xl bg-yellow-400 text-gray-900 font-bold text-lg shadow-lg hover:bg-yellow-300 transition py-3 mt-2"
+                className="w-full rounded-xl bg-yellow-400 text-gray-900 font-bold text-sm sm:text-base md:text-lg shadow-lg hover:bg-yellow-300 transition py-2 sm:py-3 mt-2"
               >
                 {isLoading ? "Creating..." : "Create Product"}
               </Button>

@@ -25,15 +25,15 @@ function PaymentPage() {
           filter: "blur(10px) brightness(0.75)",
         }}
       />
-      <main className="relative z-10 px-8 pt-32">
-        <h2 className="text-4xl font-bold">Review Your Order</h2>
-        <div className="mt-4 grid grid-cols-4 gap-x-4">
+      <main className="relative z-10 px-4 sm:px-8 pt-24 sm:pt-32">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold">Review Your Order</h2>
+        <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {cart.map((item, index) => (
             <CartItem key={index} item={item} />
           ))}
         </div>
-        <div className="mt-4">
-          <p>
+        <div className="mt-4 p-4 bg-white/70 backdrop-blur-md rounded-xl shadow-lg">
+          <p className="text-lg sm:text-xl font-semibold">
             Total Price: $
             {cart.reduce(
               (acc, item) => acc + item.product.price * item.quantity,

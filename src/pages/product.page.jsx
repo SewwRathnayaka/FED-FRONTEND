@@ -36,13 +36,13 @@ function ProductPage() {
             filter: "blur(10px) brightness(0.75)",
           }}
         />
-        <main className="relative z-10 px-8 pt-32">
-          <div className="grid grid-cols-2 gap-8">
-            <Skeleton className="h-[500px]" />
+        <main className="relative z-10 px-4 sm:px-8 pt-24 sm:pt-32">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+            <Skeleton className="h-[300px] sm:h-[400px] md:h-[500px]" />
             <div className="space-y-4">
-              <Skeleton className="h-12 w-3/4" />
+              <Skeleton className="h-8 sm:h-12 w-3/4" />
               <Skeleton className="h-6 w-1/4" />
-              <Skeleton className="h-32" />
+              <Skeleton className="h-24 sm:h-32" />
               <Skeleton className="h-10 w-1/3" />
             </div>
           </div>
@@ -62,8 +62,8 @@ function ProductPage() {
           filter: "blur(10px) brightness(0.75)",
         }}
       />
-      <main className="relative z-10 px-8 pt-32">
-        <div className="grid grid-cols-2 gap-8">
+      <main className="relative z-10 px-4 sm:px-8 pt-24 sm:pt-32">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
           <div className="aspect-square">
             <img
               src={product.image}
@@ -72,10 +72,10 @@ function ProductPage() {
             />
           </div>
           <div className="space-y-4">
-            <h1 className="text-4xl font-bold">{product.name}</h1>
-            <p className="text-2xl font-semibold">${product.price}</p>
-            <p className="text-gray-600">{product.description}</p>
-            <Button onClick={handleAddToCart} className="w-full md:w-auto">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold">{product.name}</h1>
+            <p className="text-xl sm:text-2xl font-semibold">${product.price}</p>
+            <p className="text-sm sm:text-base text-gray-600">{product.description}</p>
+            <Button onClick={handleAddToCart} className="w-full sm:w-auto text-sm sm:text-base py-2 sm:py-3 px-4 sm:px-6">
               Add to Cart
             </Button>
           </div>

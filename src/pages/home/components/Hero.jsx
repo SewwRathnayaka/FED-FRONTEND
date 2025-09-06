@@ -17,17 +17,17 @@ function Hero() {
       {/* Overlay for readability (restored) */}
       <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent z-20" />
       {/* Content - left side */}
-      <div className="relative z-30 flex-1 flex flex-col justify-center items-start h-[60vh] md:h-full max-w-3xl px-8 md:px-16">
-        <span className="discount-badge bg-yellow-400 text-gray-900 font-bold px-3 py-1 mb-2 inline-block rounded-full tracking-wide shadow-lg">WEEKLY DISCOUNT</span>
-        <h1 className="hero-title text-5xl font-extrabold leading-tight mb-4 text-white drop-shadow-lg">
+      <div className="relative z-30 flex-1 flex flex-col justify-center items-start h-[60vh] md:h-full max-w-3xl px-4 sm:px-8 md:px-16 pt-16 sm:pt-20 md:pt-24">
+        <span className="discount-badge bg-yellow-400 text-gray-900 font-bold px-2 sm:px-3 py-1 mb-2 inline-block rounded-full tracking-wide shadow-lg text-xs sm:text-sm">WEEKLY DISCOUNT</span>
+        <h1 className="hero-title text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold leading-tight mb-4 text-white drop-shadow-lg">
           <span className="text-white">Premium </span>
           <span className="text-yellow-400">Products</span>
           <span className="text-white"> Online Shop</span>
         </h1>
-        <p className="text-lg text-gray-100 mb-6 font-medium drop-shadow">
+        <p className="text-sm sm:text-base md:text-lg text-gray-100 mb-4 sm:mb-6 font-medium drop-shadow">
           Discover the latest trends and shop your favorite products with exclusive discounts every week.
         </p>
-        <Button className="w-fit px-8 py-3 rounded-full bg-yellow-400 text-gray-900 font-bold text-lg shadow-lg hover:bg-yellow-300 transition" asChild>
+        <Button className="w-fit px-4 sm:px-6 md:px-8 py-2 sm:py-3 rounded-full bg-yellow-400 text-gray-900 font-bold text-sm sm:text-base md:text-lg shadow-lg hover:bg-yellow-300 transition" asChild>
           <Link to="/shop">Shop Now</Link>
         </Button>
       </div>

@@ -11,6 +11,15 @@ export const baseApi = createApi({
       }
       return headers;
     },
+    fetchFn: async (...args) => {
+      console.log('API Call:', args[0]);
+      const response = await fetch(...args);
+      console.log('API Response:', response.status, response.statusText);
+      if (!response.ok) {
+        console.error('API Error:', response.status, response.statusText);
+      }
+      return response;
+    },
   }),
   endpoints: (builder) => ({
     getProducts: builder.query({

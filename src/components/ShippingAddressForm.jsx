@@ -84,18 +84,19 @@ const ShippingAddressForm = ({ cart }) => {
     <div>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)}>
-          <div className="grid grid-cols-2 gap-y-2 gap-x-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
             <FormField
               control={form.control}
               name="line_1"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Line 1</FormLabel>
+                  <FormLabel className="text-sm font-medium">Address Line 1</FormLabel>
                   <FormControl>
                     <Input 
                       placeholder="16/1" 
                       {...field}
                       value={field.value || ''} // Add this to ensure value is never undefined
+                      className="text-sm"
                     />
                   </FormControl>
                   <FormMessage />
@@ -107,9 +108,9 @@ const ShippingAddressForm = ({ cart }) => {
               name="line_2"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Line 1</FormLabel>
+                  <FormLabel className="text-sm font-medium">Address Line 2</FormLabel>
                   <FormControl>
-                    <Input placeholder="Main St" {...field} />
+                    <Input placeholder="Main St" {...field} className="text-sm" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -120,9 +121,9 @@ const ShippingAddressForm = ({ cart }) => {
               name="city"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>City</FormLabel>
+                  <FormLabel className="text-sm font-medium">City</FormLabel>
                   <FormControl>
-                    <Input placeholder="Kadawatha" {...field} />
+                    <Input placeholder="Kadawatha" {...field} className="text-sm" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -133,9 +134,9 @@ const ShippingAddressForm = ({ cart }) => {
               name="state"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>State/Province</FormLabel>
+                  <FormLabel className="text-sm font-medium">State/Province</FormLabel>
                   <FormControl>
-                    <Input placeholder="Wester Province" {...field} />
+                    <Input placeholder="Wester Province" {...field} className="text-sm" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -146,9 +147,9 @@ const ShippingAddressForm = ({ cart }) => {
               name="zip_code"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Zip Code</FormLabel>
+                  <FormLabel className="text-sm font-medium">Zip Code</FormLabel>
                   <FormControl>
-                    <Input placeholder="11850" {...field} />
+                    <Input placeholder="11850" {...field} className="text-sm" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -159,17 +160,17 @@ const ShippingAddressForm = ({ cart }) => {
               name="phone"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Phone Number</FormLabel>
+                  <FormLabel className="text-sm font-medium">Phone Number</FormLabel>
                   <FormControl>
-                    <Input placeholder="+94702700100" {...field} />
+                    <Input placeholder="+94702700100" {...field} className="text-sm" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
           </div>
-          <div className="mt-4">
-            <Button type="submit">Proceed to Payment</Button>
+          <div className="mt-4 sm:mt-6">
+            <Button type="submit" className="w-full sm:w-auto text-sm sm:text-base py-2 sm:py-3 px-4 sm:px-6">Proceed to Payment</Button>
           </div>
         </form>
       </Form>

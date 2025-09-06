@@ -4,7 +4,7 @@ function Tab(props) {
   };
 
   const baseClasses =
-    "px-3 py-1 rounded-full border transition-all duration-200 font-medium text-base backdrop-blur-md";
+    "px-2 sm:px-3 py-1 sm:py-2 rounded-full border transition-all duration-200 font-medium text-sm sm:text-base backdrop-blur-md whitespace-nowrap flex-shrink-0";
 
   if (props._id === props.selectedCategoryId) {
     return (

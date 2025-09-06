@@ -18,23 +18,23 @@ function CartPage() {
           filter: "blur(10px) brightness(0.75)",
         }}
       />
-      <main className="relative z-10 px-8 pt-32 flex flex-col items-center">
-        <h2 className="text-2xl font-bold text-gray-900 bg-white/70 rounded-xl px-6 py-2 shadow-lg mb-8 backdrop-blur-md">My Cart</h2>
-        <div className="mt-4 grid grid-cols-2 w-1/2 gap-x-4">
+      <main className="relative z-10 px-4 sm:px-8 pt-24 sm:pt-32 flex flex-col items-center">
+        <h2 className="text-xl sm:text-2xl font-bold text-gray-900 bg-white/70 rounded-xl px-4 sm:px-6 py-2 shadow-lg mb-6 sm:mb-8 backdrop-blur-md">My Cart</h2>
+        <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 w-full max-w-4xl gap-4">
           {cart.map((item, index) => (
             <CartItem key={index} item={item} />
           ))}
         </div>
-        <div className="mt-4 w-1/2 flex justify-center">
+        <div className="mt-4 w-full max-w-md flex justify-center">
           {cart.length > 0 ? (
             <Button
               asChild
-              className="w-full rounded-xl bg-yellow-400 text-gray-900 font-bold text-lg shadow-lg hover:bg-yellow-300 transition py-3 mt-2"
+              className="w-full rounded-xl bg-yellow-400 text-gray-900 font-bold text-base sm:text-lg shadow-lg hover:bg-yellow-300 transition py-3 mt-2"
             >
               <Link to="/shop/checkout">Proceed to Checkout</Link>
             </Button>
           ) : (
-            <p>No items in cart</p>
+            <p className="text-gray-600 text-center">No items in cart</p>
           )}
         </div>
       </main>
