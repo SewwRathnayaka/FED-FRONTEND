@@ -1,4 +1,4 @@
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+import axios from 'axios';
 
 // API Configuration - Load from environment variables
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://fixfinder-backend-zrn7.onrender.com/api';
@@ -9,7 +9,7 @@ const API_TIMEOUT = parseInt(import.meta.env.VITE_API_TIMEOUT || String(DEFAULT_
 const NODE_ENV = import.meta.env.VITE_NODE_ENV || 'development';
 
 // Create axios instance
-const api: AxiosInstance = axios.create({
+const api = axios.create({
   baseURL: API_BASE_URL,
   timeout: API_TIMEOUT,
   headers: {
@@ -39,7 +39,7 @@ api.interceptors.request.use(
 
 // Response interceptor for error handling
 api.interceptors.response.use(
-  (response: AxiosResponse) => {
+  (response) => {
     return response;
   },
   (error) => {
@@ -62,22 +62,22 @@ export class ServicesAPI {
     return response.data;
   }
 
-  static async getServiceById(serviceId: string) {
+  static async getServiceById(serviceId) {
     const response = await api.get(`/services/${serviceId}`);
     return response.data;
   }
 
-  static async createService(serviceData: any) {
+  static async createService(serviceData) {
     const response = await api.post('/services', serviceData);
     return response.data;
   }
 
-  static async updateService(serviceId: string, serviceData: any) {
+  static async updateService(serviceId, serviceData) {
     const response = await api.put(`/services/${serviceId}`, serviceData);
     return response.data;
   }
 
-  static async deleteService(serviceId: string) {
+  static async deleteService(serviceId) {
     const response = await api.delete(`/services/${serviceId}`);
     return response.data;
   }
@@ -89,57 +89,57 @@ export class BookingsAPI {
     return response.data;
   }
 
-  static async getBookingById(bookingId: string) {
+  static async getBookingById(bookingId) {
     const response = await api.get(`/bookings/${bookingId}`);
     return response.data;
   }
 
-  static async createBooking(bookingData: any) {
+  static async createBooking(bookingData) {
     const response = await api.post('/bookings', bookingData);
     return response.data;
   }
 
-  static async getClientBookings(clientId: string) {
+  static async getClientBookings(clientId) {
     const response = await api.get(`/bookings/client/${clientId}`);
     return response.data;
   }
 
-  static async getProviderBookings(providerId: string) {
+  static async getProviderBookings(providerId) {
     const response = await api.get(`/bookings/provider/${providerId}`);
     return response.data;
   }
 
-  static async updateBookingStatus(bookingId: string, status: string) {
+  static async updateBookingStatus(bookingId, status) {
     const response = await api.patch(`/bookings/${bookingId}/status`, { status });
     return response.data;
   }
 
   // Public endpoint to update booking status (for handyman dashboard)
-  static async updateBookingStatusPublic(bookingId: string, status: 'accepted' | 'rejected' | 'paid' | 'done' | 'completed', fee?: number, clerkUserId?: string) {
+  static async updateBookingStatusPublic(bookingId, status, fee, clerkUserId) {
     const response = await api.patch(`/bookings/${bookingId}/status-public`, { status, fee, clerkUserId });
     return response.data;
   }
 
   // Public endpoint to update booking status (for client dashboard)
-  static async updateBookingStatusClient(bookingId: string, status: 'paid' | 'completed', clerkUserId?: string) {
+  static async updateBookingStatusClient(bookingId, status, clerkUserId) {
     const response = await api.patch(`/bookings/${bookingId}/status-client`, { status, clerkUserId });
     return response.data;
   }
 
   // General method to update booking data
-  static async updateBooking(bookingId: string, bookingData: any) {
+  static async updateBooking(bookingId, bookingData) {
     const response = await api.put(`/bookings/${bookingId}`, bookingData);
     return response.data;
   }
 }
 
 export class AuthAPI {
-  static async login(credentials: { email: string; password: string }) {
+  static async login(credentials) {
     const response = await api.post('/auth/login', credentials);
     return response.data;
   }
 
-  static async register(userData: any) {
+  static async register(userData) {
     const response = await api.post('/auth/register', userData);
     return response.data;
   }
@@ -159,7 +159,7 @@ export class AuthAPI {
     return response.data;
   }
 
-  static async verifyUserRole(userId: string) {
+  static async verifyUserRole(userId) {
     const response = await api.get(`/auth/verify-role/${userId}`);
     return response.data;
   }
@@ -171,12 +171,12 @@ export class UsersAPI {
     return response.data;
   }
 
-  static async updateProfile(userData: any) {
+  static async updateProfile(userData) {
     const response = await api.put('/users/profile', userData);
     return response.data;
   }
 
-  static async uploadAvatar(file: File) {
+  static async uploadAvatar(file) {
     const formData = new FormData();
     formData.append('avatar', file);
     
@@ -190,23 +190,23 @@ export class UsersAPI {
 }
 
 export class ReviewsAPI {
-  static async getReviews(serviceId?: string) {
+  static async getReviews(serviceId) {
     const url = serviceId ? `/reviews?serviceId=${serviceId}` : '/reviews';
     const response = await api.get(url);
     return response.data;
   }
 
-  static async createReview(reviewData: any) {
+  static async createReview(reviewData) {
     const response = await api.post('/reviews', reviewData);
     return response.data;
   }
 
-  static async updateReview(reviewId: string, reviewData: any) {
+  static async updateReview(reviewId, reviewData) {
     const response = await api.put(`/reviews/${reviewId}`, reviewData);
     return response.data;
   }
 
-  static async deleteReview(reviewId: string) {
+  static async deleteReview(reviewId) {
     const response = await api.delete(`/reviews/${reviewId}`);
     return response.data;
   }
@@ -218,7 +218,7 @@ export class NotificationsAPI {
     return response.data;
   }
 
-  static async markAsRead(notificationId: string) {
+  static async markAsRead(notificationId) {
     const response = await api.patch(`/notifications/${notificationId}/read`);
     return response.data;
   }
@@ -228,14 +228,14 @@ export class NotificationsAPI {
     return response.data;
   }
 
-  static async deleteNotification(notificationId: string) {
+  static async deleteNotification(notificationId) {
     const response = await api.delete(`/notifications/${notificationId}`);
     return response.data;
   }
 }
 
 export class HandymanAPI {
-  static async registerHandyman(handymanData: any) {
+  static async registerHandyman(handymanData) {
     const response = await api.post('/handyman/register', handymanData);
     return response.data;
   }
@@ -245,7 +245,7 @@ export class HandymanAPI {
     return response.data;
   }
 
-  static async updateHandymanProfile(profileData: any) {
+  static async updateHandymanProfile(profileData) {
     const response = await api.put('/handyman/profile', profileData);
     return response.data;
   }
@@ -255,7 +255,7 @@ export class HandymanAPI {
     return response.data;
   }
 
-  static async getServiceProvidersByServiceId(serviceId: string) {
+  static async getServiceProvidersByServiceId(serviceId) {
     const response = await api.get(`/handyman/service/${serviceId}`);
     return response.data;
   }
@@ -266,47 +266,47 @@ export class HandymanAPI {
   }
 
   // Get service provider profile by Clerk userId
-  static async getServiceProviderByUserId(userId: string) {
+  static async getServiceProviderByUserId(userId) {
     const response = await api.get(`/handyman/profile/${userId}`);
     return response.data;
   }
 
   // Get bookings assigned to a specific service provider
-  static async getProviderBookings(providerId: string) {
+  static async getProviderBookings(providerId) {
     const response = await api.get(`/bookings/provider/${providerId}`);
     return response.data;
   }
 
   // Get bookings for a service provider using their Clerk userId
-  static async getProviderBookingsByClerkUserId(clerkUserId: string) {
+  static async getProviderBookingsByClerkUserId(clerkUserId) {
     const response = await api.get(`/bookings/provider-clerk/${clerkUserId}`);
     return response.data;
   }
 
   // Get bookings for a service provider using their database ID directly
-  static async getProviderBookingsByDatabaseId(providerDatabaseId: string) {
+  static async getProviderBookingsByDatabaseId(providerDatabaseId) {
     const response = await api.get(`/bookings/provider-db/${providerDatabaseId}`);
     return response.data;
   }
 
-  static async getUserChats(userId: string, userType: string) {
+  static async getUserChats(userId, userType) {
     const response = await api.get(`/chat/user?userId=${userId}&userType=${userType}`);
     return response.data;
   }
 }
 
 export class ClientAPI {
-  static async createClient(clientData: { userId: string; username: string; email: string }) {
+  static async createClient(clientData) {
     const response = await api.post('/clients', clientData);
     return response.data;
   }
 
-  static async getClientByUserId(userId: string) {
+  static async getClientByUserId(userId) {
     const response = await api.get(`/clients/${userId}`);
     return response.data;
   }
 
-  static async updateClientProfile(userId: string, profileData: any) {
+  static async updateClientProfile(userId, profileData) {
     const response = await api.put(`/clients/${userId}`, profileData);
     return response.data;
   }
@@ -316,13 +316,13 @@ export class ClientAPI {
     return response.data;
   }
 
-  static async getUserChats(userId: string, userType: string) {
+  static async getUserChats(userId, userType) {
     const response = await api.get(`/chat/user?userId=${userId}&userType=${userType}`);
     return response.data;
   }
 
   // Check if user is registered as handyman using Clerk metadata
-  static isUserHandyman(user: any) {
+  static isUserHandyman(user) {
     try {
       // Try different ways to access metadata
       const publicMetadata = user?.publicMetadata;
@@ -342,30 +342,25 @@ export class ClientAPI {
 
 export class ChatAPI {
   // Get chat messages for a specific booking
-  static async getChatMessages(bookingId: string) {
+  static async getChatMessages(bookingId) {
     const response = await api.get(`/chat/${bookingId}/messages`);
     return response.data;
   }
 
   // Send a message via API (fallback when WebSocket is not available)
-  static async sendMessage(data: {
-    bookingId: string;
-    senderId: string;
-    senderName: string;
-    message: string;
-  }) {
+  static async sendMessage(data) {
     const response = await api.post('/chat/send', data);
     return response.data;
   }
 
   // Get all chats for a user
-  static async getUserChats(userId: string, userType: string) {
+  static async getUserChats(userId, userType) {
     const response = await api.get(`/chat/user?userId=${userId}&userType=${userType}`);
     return response.data;
   }
 
   // Mark messages as read
-  static async markMessagesAsRead(bookingId: string, userId: string, userType: string) {
+  static async markMessagesAsRead(bookingId, userId, userType) {
     const response = await api.post(`/chat/${bookingId}/mark-read`, {
       userId,
       userType
@@ -376,25 +371,25 @@ export class ChatAPI {
 
 export class StripeAPI {
   // Create a Stripe Express account for a service provider
-  static async createProviderAccount(userId: string) {
+  static async createProviderAccount(userId) {
     const response = await api.post('/stripe/create-provider-account', { userId });
     return response.data;
   }
 
   // Get provider's Stripe account status
-  static async getProviderAccountStatus(userId: string) {
+  static async getProviderAccountStatus(userId) {
     const response = await api.get(`/stripe/provider-account/${userId}`);
     return response.data;
   }
 
   // Create a checkout session for a booking
-  static async createCheckoutSession(bookingId: string) {
+  static async createCheckoutSession(bookingId) {
     const response = await api.post('/stripe/create-checkout-session', { bookingId });
     return response.data;
   }
 
   // Get payment details by booking ID
-  static async getPaymentByBookingId(bookingId: string) {
+  static async getPaymentByBookingId(bookingId) {
     const response = await api.get(`/stripe/payment/booking/${bookingId}`);
     return response.data;
   }
@@ -406,31 +401,24 @@ export class StripeAPI {
   }
 
   // Create a refund for a payment
-  static async createRefund(paymentId: string, amount?: number, reason?: string) {
+  static async createRefund(paymentId, amount, reason) {
     const response = await api.post(`/stripe/refund/${paymentId}`, { amount, reason });
     return response.data;
   }
 }
 
 export class ReviewAPI {
-  static async createReview(reviewData: {
-    bookingId: string;
-    rating: number;
-    comment: string;
-    shortDescription?: string;
-    selectedIssues?: string[];
-    detailedFeedback?: string;
-  }) {
+  static async createReview(reviewData) {
     const response = await api.post('/reviews', reviewData);
     return response.data;
   }
 
-  static async getProviderReviews(providerId: string) {
+  static async getProviderReviews(providerId) {
     const response = await api.get(`/reviews/provider/${providerId}`);
     return response.data;
   }
 
-  static async getBookingReview(bookingId: string) {
+  static async getBookingReview(bookingId) {
     const response = await api.get(`/reviews/booking/${bookingId}`);
     return response.data;
   }
@@ -441,18 +429,11 @@ export { api };
 export default api;
 
 // Export types for better TypeScript support
-export interface ApiResponse<T = any> {
-  success: boolean;
-  data?: T;
-  message?: string;
-  error?: string;
-}
-
 export class CallAPI {
   /**
    * Get access token for Twilio voice calls
    */
-  static async getAccessToken(userType?: string): Promise<ApiResponse<{ token: string; identity: string }>> {
+  static async getAccessToken(userType) {
     const user = await this.getCurrentUser();
     if (!user) {
       throw new Error('User not authenticated');
@@ -471,12 +452,7 @@ export class CallAPI {
   /**
    * Get contact information for the other party in a booking
    */
-  static async getContactNumber(bookingId: string, userType: string): Promise<ApiResponse<{
-    otherPartyId: string;
-    otherPartyIdentity: string;
-    otherPartyName: string;
-    otherPartyPhone: string | null;
-  }>> {
+  static async getContactNumber(bookingId, userType) {
     const user = await this.getCurrentUser();
     if (!user) {
       throw new Error('User not authenticated');
@@ -494,14 +470,7 @@ export class CallAPI {
   /**
    * Initiate a call
    */
-  static async initiateCall(bookingId: string, userType: string): Promise<ApiResponse<{
-    callId: string;
-    bookingId: string;
-    callerId: string;
-    receiverId: string;
-    callerIdentity: string;
-    receiverIdentity: string;
-  }>> {
+  static async initiateCall(bookingId, userType) {
     const user = await this.getCurrentUser();
     if (!user) {
       throw new Error('User not authenticated');
@@ -521,7 +490,7 @@ export class CallAPI {
   /**
    * Get call history for a booking
    */
-  static async getCallHistory(bookingId: string, userType: string): Promise<ApiResponse<any[]>> {
+  static async getCallHistory(bookingId, userType) {
     const user = await this.getCurrentUser();
     if (!user) {
       throw new Error('User not authenticated');
@@ -540,16 +509,8 @@ export class CallAPI {
    * Helper to get current user (from Clerk)
    * This is handled by the components using useUser hook
    */
-  private static async getCurrentUser(): Promise<{ id: string } | null> {
+  static async getCurrentUser() {
     return null; // Components will pass user info in headers
   }
 }
 
-export interface PaginatedResponse<T = any> extends ApiResponse<T[]> {
-  pagination: {
-    page: number;
-    limit: number;
-    total: number;
-    totalPages: number;
-  };
-} 
