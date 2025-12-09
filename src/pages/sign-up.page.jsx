@@ -6,7 +6,7 @@ export default function SignUpPage() {
       <div
         className="absolute inset-0 w-full h-full z-0"
         style={{
-          backgroundImage: "url('/assets/products/Fashion1.jpeg.jpg')",
+          backgroundImage: "url('/assets/products/Fashion1.jpeg.webp')",
           backgroundSize: "cover",
           backgroundPosition: "center",
           filter: "blur(10px) brightness(0.75)",

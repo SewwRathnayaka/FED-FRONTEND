@@ -15,91 +15,24 @@ function ShopPage() {
   const [selectedCategoryId, setSelectedCategoryId] = useState("ALL");
   const [sortOrder, setSortOrder] = useState("none");
 
-  const { data: products, isLoading: isProductsLoading, isError: isProductsError, error: productsError } = useGetProductsQuery();
-  const { data: categories, isLoading: isCategoriesLoading, isError: isCategoriesError, error: categoriesError } = useGetCategoriesQuery();
-
-  // Debug logging
-  console.log('ShopPage API Debug:', {
-    products,
-    isProductsLoading,
-    isProductsError,
-    productsError,
-    categories,
-    isCategoriesLoading,
-    isCategoriesError,
-    categoriesError
-  });
-
-  // Extract the actual products array from the nested structure
-  const actualProducts = products?.products || [];
-
-  // Debug the actual products structure
-  if (products) {
-    console.log('ShopPage Products structure:', {
-      products,
-      productsKeys: Object.keys(products),
-      actualProducts,
-      actualProductsLength: actualProducts.length,
-      firstProduct: actualProducts[0]
-    });
-  }
+  const { data: products, isLoading: isProductsLoading } = useGetProductsQuery();
+  const { data: categories, isLoading: isCategoriesLoading } = useGetCategoriesQuery();
 
   if (isProductsLoading || isCategoriesLoading) {
-    return (
-      <div className="relative min-h-screen w-full overflow-hidden">
-        <div
-          className="absolute inset-0 w-full h-full z-0"
-          style={{
-            backgroundImage: "url('/assets/products/Fashion1.jpeg.jpg')",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            filter: "blur(8px) brightness(0.7)",
-          }}
-        />
-        <main className="relative z-10 px-4 sm:px-8 py-16 flex items-center justify-center">
-          <div className="text-white text-lg">Loading...</div>
-        </main>
-      </div>
-    );
+    return <div>Loading...</div>;
   }
 
-  if (isProductsError || isCategoriesError) {
-    return (
-      <div className="relative min-h-screen w-full overflow-hidden">
-        <div
-          className="absolute inset-0 w-full h-full z-0"
-          style={{
-            backgroundImage: "url('/assets/products/Fashion1.jpeg.jpg')",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            filter: "blur(8px) brightness(0.7)",
-          }}
-        />
-        <main className="relative z-10 px-4 sm:px-8 py-16 flex items-center justify-center">
-          <div className="bg-white/90 backdrop-blur-md rounded-xl p-6 max-w-md">
-            <h2 className="text-xl font-bold text-red-600 mb-4">API Error</h2>
-            <p className="text-red-500 mb-2">Failed to load products or categories</p>
-            <p className="text-red-400 text-sm mb-2">
-              Products Error: {productsError?.message || 'Unknown error'}
-            </p>
-            <p className="text-red-400 text-sm mb-4">
-              Categories Error: {categoriesError?.message || 'Unknown error'}
-            </p>
-            <p className="text-yellow-600 text-sm">
-              Check browser console for more details
-            </p>
-          </div>
-        </main>
-      </div>
-    );
-  }
-
+  // Ensure products is always an array
+  const productsArray = Array.isArray(products) ? products : [];
+  
   // Filter products by category
-  const filteredProducts = actualProducts && Array.isArray(actualProducts)
-    ? selectedCategoryId === "ALL" 
-      ? actualProducts 
-      : actualProducts.filter(product => product.categoryId === selectedCategoryId)
-    : [];
+  const filteredProducts = selectedCategoryId === "ALL" 
+    ? productsArray 
+    : productsArray.filter(product => {
+        // Handle both ObjectId objects and strings
+        const productCategoryId = product.categoryId?._id || product.categoryId;
+        return String(productCategoryId) === String(selectedCategoryId);
+      });
 
   // Sort products by price
   const sortedProducts = [...filteredProducts].sort((a, b) => {
@@ -114,16 +47,16 @@ function ShopPage() {
       <div
         className="absolute inset-0 w-full h-full z-0"
         style={{
-          backgroundImage: "url('/assets/products/Fashion1.jpeg.jpg')",
+          backgroundImage: "url('/assets/products/Fashion1.jpeg.webp')",
           backgroundSize: "cover",
           backgroundPosition: "center",
           filter: "blur(8px) brightness(0.7)",
         }}
       />
       {/* Content overlay */}
-      <main className="relative z-10 px-4 sm:px-8 py-16">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mt-4 mb-6 sm:mb-8">
-          <div className="flex items-center gap-2 sm:gap-4 overflow-x-auto pb-2 w-full sm:w-auto">
+      <main className="relative z-10 px-8 py-16">
+        <div className="flex justify-between items-center mt-4 mb-8">
+          <div className="flex items-center gap-4">
             <Tab
               key="ALL"
               _id="ALL"
@@ -131,7 +64,7 @@ function ShopPage() {
               name="All"
               onTabClick={setSelectedCategoryId}
             />
-            {categories && Array.isArray(categories) && categories
+            {Array.isArray(categories) && categories
               .filter(category => category._id !== "ALL" && category.name !== "All")
               .map((category) => (
                 <Tab
@@ -145,7 +78,7 @@ function ShopPage() {
           </div>
 
           <Select value={sortOrder} onValueChange={setSortOrder}>
-            <SelectTrigger className="w-full sm:w-[180px]">
+            <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Sort by price" />
             </SelectTrigger>
             <SelectContent>
@@ -157,7 +90,7 @@ function ShopPage() {
         </div>
 
         {/* Product cards area with extra overlay for readability */}
-        <div className="rounded-2xl bg-white/70 backdrop-blur-md p-4 sm:p-6 md:p-8 shadow-xl">
+        <div className="rounded-2xl bg-white/70 backdrop-blur-md p-8 shadow-xl">
           <ProductCards products={sortedProducts} />
         </div>
       </main>

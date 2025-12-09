@@ -1,15 +1,16 @@
-import Navigation from "@/components/Navigation";
 import { Outlet } from "react-router-dom";
 import { Toaster } from "@/components/ui/sonner";
 import Footer from "@/components/Footer";
 
 function RootLayout() {
   return (
-    <>
-      <Outlet />
-      <Toaster />
+    <div className="min-h-screen flex flex-col">
+      <div className="flex-1">
+        <Outlet />
+      </div>
       <Footer />
-    </>
+      <Toaster />
+    </div>
   );
 }
 

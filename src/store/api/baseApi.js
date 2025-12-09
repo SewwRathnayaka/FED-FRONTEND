@@ -21,10 +21,27 @@ export const baseApi = createApi({
       return response;
     },
   }),
+  // Add default caching behavior
+  keepUnusedDataFor: 60, // Cache data for 60 seconds
   endpoints: (builder) => ({
     getProducts: builder.query({
       query: () => "products",
-      providesTags: ['Products']
+      providesTags: ['Products'],
+      // Transform response to extract products array from { products: [...], pagination: {...} }
+      transformResponse: (response) => {
+        // Ensure we always return an array
+        if (Array.isArray(response)) {
+          return response;
+        }
+        if (response && Array.isArray(response.products)) {
+          return response.products;
+        }
+        // Fallback to empty array if structure is unexpected
+        console.warn('Unexpected products response structure:', response);
+        return [];
+      },
+      // Cache for 5 minutes since products don't change frequently
+      keepUnusedDataFor: 300,
     }),
     getCategories: builder.query({
       query: () => "categories",

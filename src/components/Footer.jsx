@@ -2,7 +2,7 @@ import React from "react";
 
 export default function Footer() {
   return (
-    <footer className="relative w-full  bg-[rgba(46,64,109,0.7)] backdrop-blur-md border-t border-[rgba(255,255,255,0.08)] text-white">
+    <footer className="relative w-full mt-auto bg-[rgba(46,64,109,0.7)] backdrop-blur-md border-t border-[rgba(255,255,255,0.08)] text-white">
       <div className="max-w-7xl mx-auto px-6 py-12 flex flex-col md:flex-row md:justify-between gap-10">
         {/* Logo & Tagline */}
         <div className="flex-1 min-w-[180px]">

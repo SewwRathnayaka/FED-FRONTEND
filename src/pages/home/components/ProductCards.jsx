@@ -1,20 +1,20 @@
 import ProductCard from "./ProductCard";
 
 function ProductCards(props) {
-  // Add safety check for products array
-  if (!props.products || !Array.isArray(props.products)) {
+  // Ensure products is always an array
+  const products = Array.isArray(props.products) ? props.products : [];
+  
+  if (products.length === 0) {
     return (
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-4">
-        <div className="col-span-full text-center text-gray-500 py-8">
-          No products available
-        </div>
+      <div className="text-center py-8">
+        <p className="text-gray-500">No products found.</p>
       </div>
     );
   }
-
+  
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-4">
-      {props.products.map((product) => {
+    <div className="grid grid-cols-4 gap-4 mt-4">
+      {products.map((product) => {
         return (
           <ProductCard
             key={product._id}

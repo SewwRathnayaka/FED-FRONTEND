@@ -1,9 +1,7 @@
 import { Button } from "@/components/ui/button";
-import { useGetOrderQuery, useGetCheckoutSessionStatusQuery } from "@/lib/api";
+import { useGetCheckoutSessionStatusQuery } from "@/lib/api";
 import { Link, useSearchParams, Navigate } from "react-router";
-import { useState, useEffect } from "react";
-
-const BASE_URL = import.meta.env.VITE_BASE_URL;
+import PageLoader from "@/components/PageLoader";
 
 function CompletePage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -13,7 +11,11 @@ function CompletePage() {
     useGetCheckoutSessionStatusQuery(sessionId);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="relative min-h-screen w-full">
+        <PageLoader message="Finalizing your order..." />
+      </div>
+    );
   }
 
   if (isError) {
@@ -30,7 +32,7 @@ function CompletePage() {
         <div
           className="absolute inset-0 w-full h-full z-0"
           style={{
-            backgroundImage: "url('/assets/products/Fashion1.jpeg.jpg')",
+            backgroundImage: "url('/assets/products/Fashion1.jpeg.webp')",
             backgroundSize: "cover",
             backgroundPosition: "center",
             filter: "blur(10px) brightness(0.75)",
