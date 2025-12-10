@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { useGetCheckoutSessionStatusQuery } from "@/lib/api";
+import { useGetCheckoutSessionStatusQuery } from "@/store/api/baseApi";
 import { Link, useSearchParams, Navigate } from "react-router";
 import PageLoader from "@/components/PageLoader";
 

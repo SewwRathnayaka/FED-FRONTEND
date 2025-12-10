@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { useCreateCheckoutSessionMutation } from "../lib/api";
 import { loadStripe } from "@stripe/stripe-js";
 import {
   EmbeddedCheckout,

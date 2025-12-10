@@ -82,6 +82,9 @@ export const baseApi = createApi({
     }),
     getUserOrders: builder.query({
       query: () => "orders/user/orders"
+    }),
+    getCheckoutSessionStatus: builder.query({
+      query: (sessionId) => `payments/checkout-session-status?session_id=${sessionId}`
     })
   }),
 });
@@ -93,5 +96,6 @@ export const {
   useCreateProductMutation,
   useGetProductQuery,
   useGetOrderQuery,
-  useGetUserOrdersQuery
+  useGetUserOrdersQuery,
+  useGetCheckoutSessionStatusQuery
 } = baseApi;
