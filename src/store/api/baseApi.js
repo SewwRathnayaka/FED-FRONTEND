@@ -5,7 +5,9 @@ export const baseApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: "https://fed-storefront-backend-sewwandi.onrender.com/api/",
     prepareHeaders: async (headers) => {
-      const token = await window.Clerk?.session?.getToken({ template: 'admin-role' });
+      // Get regular token for most endpoints (products, orders, payments)
+      // Admin endpoints can override this if needed
+      const token = await window.Clerk?.session?.getToken();
       if (token) {
         headers.set("Authorization", `Bearer ${token}`);
       }
@@ -107,7 +109,12 @@ export const baseApi = createApi({
       query: () => "orders/user/orders"
     }),
     getCheckoutSessionStatus: builder.query({
-      query: (sessionId) => `payments/checkout-session-status?session_id=${sessionId}`
+      query: (sessionId) => {
+        if (!sessionId) {
+          throw new Error('Session ID is required');
+        }
+        return `payments/session-status?session_id=${sessionId}`;
+      }
     })
   }),
 });

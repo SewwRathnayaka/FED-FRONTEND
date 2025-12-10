@@ -7,8 +7,10 @@ function CompletePage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const sessionId = searchParams.get("session_id");
 
-  const { data, isLoading, isError } =
-    useGetCheckoutSessionStatusQuery(sessionId);
+  const { data, isLoading, isError, error } =
+    useGetCheckoutSessionStatusQuery(sessionId, {
+      skip: !sessionId, // Skip query if no sessionId
+    });
 
   if (isLoading) {
     return (
@@ -18,8 +20,32 @@ function CompletePage() {
     );
   }
 
+  if (!sessionId) {
+    return (
+      <div className="relative min-h-screen w-full flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold mb-4 text-red-600">Invalid Session</h2>
+          <p className="mb-4">No session ID found. Please complete your checkout.</p>
+          <Button asChild>
+            <Link to="/">Return to Home</Link>
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
   if (isError) {
-    return <div>Error</div>;
+    return (
+      <div className="relative min-h-screen w-full flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold mb-4 text-red-600">Error Loading Order</h2>
+          <p className="mb-4">{error?.data?.error || error?.message || "Failed to retrieve order status"}</p>
+          <Button asChild>
+            <Link to="/">Return to Home</Link>
+          </Button>
+        </div>
+      </div>
+    );
   }
 
   if (data?.status === "open") {
