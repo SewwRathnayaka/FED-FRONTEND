@@ -11,7 +11,10 @@ function Products(props) {
     isLoading: isProductsLoading,
     isError: isProductsError,
     error: productsError,
-  } = useGetProductsQuery();
+  } = useGetProductsQuery(undefined, {
+    // Refetch on mount if data is stale
+    refetchOnMountOrArgChange: true,
+  });
 
   const {
     data: categories,
@@ -37,10 +40,19 @@ function Products(props) {
     setSelectedCategoryId(_id);
   };
 
-  console.log({
+  // Debug logging
+  if (productsError) {
+    console.error('❌ Products Error:', productsError);
+  }
+  console.log('📦 Products State:', {
     products,
+    productsType: typeof products,
+    isArray: Array.isArray(products),
+    productsLength: Array.isArray(products) ? products.length : 'N/A',
     selectedCategoryId,
-    filteredProducts
+    filteredProductsLength: filteredProducts.length,
+    isLoading: isProductsLoading,
+    isError: isProductsError,
   });
 
   if (isProductsLoading || isCategoriesLoading) {
